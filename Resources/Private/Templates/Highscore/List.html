@@ -1,0 +1,84 @@
+{namespace bw=BoergenerWebdesign\BwTetris\ViewHelpers}
+<f:layout name="Default" />
+
+<f:section name="main">
+    <div class="text-center mb-5">
+        <div class="mb-5">
+            <h1>Highscore</h1>
+            <p class="text-info">Schon nachgesehen, was du alles für Belohnungen freischalten kannst?</p>
+        </div>
+
+        <f:if condition="{mode} == 'default'">
+            <f:then>
+                <f:link.action action="list" arguments="{mode : 'default'}" class="btn btn-primary px-5">
+                    <bw:mode name="default" />
+                </f:link.action>
+            </f:then>
+            <f:else>
+                <f:link.action action="list" arguments="{mode : 'default'}" class="btn btn-secondary px-5">
+                    <bw:mode name="default" />
+                </f:link.action>
+            </f:else>
+        </f:if>
+        <f:if condition="{mode} == 'carousel'">
+            <f:then>
+                <f:link.action action="list" arguments="{mode : 'carousel'}" class="btn btn-primary px-5">
+                    <bw:mode name="carousel" />
+                </f:link.action>
+            </f:then>
+            <f:else>
+                <f:link.action action="list" arguments="{mode : 'carousel'}" class="btn btn-secondary px-5">
+                    <bw:mode name="carousel" />
+                </f:link.action>
+            </f:else>
+        </f:if>
+        <f:if condition="{mode} == 'cube'">
+            <f:then>
+                <f:link.action action="list" arguments="{mode : 'cube'}" class="btn btn-primary px-5">
+                    <bw:mode name="cube" />
+                </f:link.action>
+            </f:then>
+            <f:else>
+                <f:link.action action="list" arguments="{mode : 'cube'}" class="btn btn-secondary px-5">
+                    <bw:mode name="cube" />
+                </f:link.action>
+            </f:else>
+        </f:if>
+        <f:if condition="{mode} == 'old'">
+            <f:then>
+                <f:link.action action="list" arguments="{mode : 'old'}" class="btn btn-primary px-5">
+                    <bw:mode name="old" />
+                </f:link.action>
+            </f:then>
+            <f:else>
+                <f:link.action action="list" arguments="{mode : 'old'}" class="btn btn-secondary px-5">
+                    <bw:mode name="old" />
+                </f:link.action>
+            </f:else>
+        </f:if>
+
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Datum</th>
+            <th class="text-right">Punktestand</th>
+        </tr>
+        </thead>
+        <tbody>
+        <f:for each="{scores}" as="score">
+            <tr>
+                <td>{score.name}</td>
+                <td>
+                    <f:format.date format="d.m.Y">{score.date}</f:format.date>
+                </td>
+                <td class="text-right">
+                    <f:format.number thousandsSeparator="." decimals="0">{score.points}</f:format.number>
+                </td>
+            </tr>
+        </f:for>
+        </tbody>
+    </table>
+</f:section>

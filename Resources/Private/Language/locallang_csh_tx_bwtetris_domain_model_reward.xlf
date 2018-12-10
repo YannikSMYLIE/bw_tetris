@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2018-07-21T15:19:21Z" product-name="bw_tetris">
+		<header/>
+		<body>
+			<trans-unit id="tx_bw_tetris_domain_model_game">
+				<source>Tetris</source>
+			</trans-unit>
+			<trans-unit id="tx_bw_tetris_domain_model_game.description">
+				<source>Das Spiel Tetris an sich.</source>
+			</trans-unit>
+			<trans-unit id="points.description">
+				<source>points</source>
+			</trans-unit>
+			<trans-unit id="mode.description">
+				<source>mode</source>
+			</trans-unit>
+			<trans-unit id="start.description">
+				<source>start</source>
+			</trans-unit>
+			<trans-unit id="text.description">
+				<source>text</source>
+			</trans-unit>
+			<trans-unit id="images.description">
+				<source>images</source>
+			</trans-unit>
+			<trans-unit id="files.description">
+				<source>files</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

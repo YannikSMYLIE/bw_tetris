@@ -1,0 +1,44 @@
+{namespace bw=BoergenerWebdesign\BwTetris\ViewHelpers}
+<div class="card text-center {f:if(condition : hint.isUnlocked, then : 'unlocked text-white bg-primary', else : 'bg-light')}">
+    <div class="card-body" data-toggle="modal" data-target="#show{hint.uid}">
+        <f:if condition="{hint.isUnlocked}">
+            <f:then>
+                <p class="card-text">
+                    Hier klicken um den Hinweis anzuzeigen.
+                </p>
+            </f:then>
+            <f:else>
+                <p class="card-text">
+                    Du musst <b>{hint.points}</b> Punkte im Modus <b><bw:mode name="{hint.mode}" /></b> erreichen um diesen Hinweis freizuschalten.
+                </p>
+                <p class="card-text">
+                    <small class="text-muted">
+                        Freischaltbar ab dem <f:format.date format="d.m.Y">{hint.start}</f:format.date>
+                    </small>
+                </p>
+            </f:else>
+        </f:if>
+    </div>
+</div>
+
+
+<f:if condition="{hint.isUnlocked}">
+    <div class="modal fade text-center" id="show{hint.uid}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p><f:format.nl2br>{hint.text}</f:format.nl2br></p>
+                    <f:if condition="{hint.images}">
+                        <f:image src="{hint.images.originalResource.originalFile.uid}" class="img-fluid" />
+                    </f:if>
+                    <f:if condition="{hint.video}">
+                        <video width="281" height="500" controls>
+                            <source src="{hint.video.originalResource.originalFile.publicUrl}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </f:if>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:if>

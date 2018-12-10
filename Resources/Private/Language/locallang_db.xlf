@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2018-07-21T15:19:21Z" product-name="bw_tetris">
+		<header/>
+		<body>
+			<trans-unit id="tx_bw_tetris_domain_model_game">
+				<source>Tetris</source>
+			</trans-unit>
+			<trans-unit id="tx_bw_tetris_domain_model_game.description">
+				<source>Das Spiel Tetris an sich.</source>
+			</trans-unit>
+
+			<trans-unit id="tx_bwtetris_domain_model_highscore">
+				<source>Highscore</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.mode">
+				<source>Mode</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.points">
+				<source>Points</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.date">
+				<source>Datum</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.name">
+				<source>Name</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.stone_l">
+				<source>Anzahl Stein vom Typ L</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.stone_j">
+				<source>Anzahl Stein vom Typ J</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.stone_i">
+				<source>Anzahl Stein vom Typ I</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.stone_o">
+				<source>Anzahl Stein vom Typ O</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.stone_s">
+				<source>Anzahl Stein vom Typ S</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.stone_z">
+				<source>Anzahl Stein vom Typ Z</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.stone_t">
+				<source>Anzahl Stein vom Typ T</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.key_left">
+				<source>Nach links bewegt</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.key_right">
+				<source>Nach rechts bewegt</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.rotate">
+				<source>Drehungen</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.begin_of_game">
+				<source>Beginn des Spiels (Timestamp)</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.end_of_game">
+				<source>Ende des Spiels (Timestamp)</source>
+			</trans-unit>
+
+
+            <!-- Reward -->
+			<trans-unit id="tx_bwtetris_domain_model_reward">
+				<source>Reward</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_reward.title">
+				<source>Titel</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_reward.color">
+				<source>Farbe</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_reward.hints">
+				<source>Hinweise</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_reward.auto_complete">
+				<source>Automatisch abschließen</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_reward.completed">
+				<source>Abgeschlossen?</source>
+			</trans-unit>
+
+			<trans-unit id="tx_bwtetris_domain_model_hint">
+				<source>Hinweis</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_hint.points">
+				<source>Points</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_hint.mode">
+				<source>Mode</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_hint.start">
+				<source>Start</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_hint.text">
+				<source>Text</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_hint.images">
+				<source>Images</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_hint.files">
+				<source>Files</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_hint.reward">
+				<source>Belohnung</source>
+			</trans-unit>
+
+			<trans-unit id="tx_bwtetris_domain_model_person">
+				<source>Person</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_person.image">
+				<source>Bild</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_person.name">
+				<source>Name</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

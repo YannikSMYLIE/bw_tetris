@@ -1,0 +1,43 @@
+{namespace bw=BoergenerWebdesign\BwTetris\ViewHelpers}
+<f:layout name="Default" />
+
+<f:section name="main">
+    <h2>Benutzer auswählen</h2>
+
+    <f:form action="set">
+        <div class="form-group">
+            <f:form.select name="antonia" options="{1 : 'Ich bin Antonia', 0 : 'Ich bin wer anders'}" class="form-control" id="antonia" />
+        </div>
+        <div class="form-group">
+            <f:form.textfield name="name" placeholder="Name eingeben" class="form-control d-none" id="name" />
+        </div>
+        <f:form.button class="btn btn-primary btn-block">Spiel starten</f:form.button>
+
+    </f:form>
+
+    <script>
+        $('#antonia').change(function() {
+            const val = Number($(this).val());
+            if(val) {
+                // Es ist Antonia
+                $('#name').addClass("d-none").prop("required", false);
+            } else {
+                // Es ist wer anders
+                $('#name').removeClass("d-none").prop("required", true);
+            }
+        });
+
+        $('form').submit(function() {
+            const select = $('#antonia');
+            const selectVal = Number(select.val());
+            if(!selectVal) {
+                const input = $('#name');
+                const name = input.val();
+                if(name == "Antonia") {
+                    alert("Du darfst nicht Antonia heißen, sorry Frau Körner!");
+                    return false;
+                }
+            }
+        });
+    </script>
+</f:section>

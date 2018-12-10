@@ -1,0 +1,19 @@
+{namespace bw=BoergenerWebdesign\BwTetris\ViewHelpers}
+<f:layout name="Game" />
+
+<f:section name="playground">
+    <f:render partial="Fields/Default" />
+</f:section>
+
+<f:section name="sidebar">
+    <f:render partial="Sidebar" arguments="{mode : 'old', name : name, beginOfGame : beginOfGame}" />
+</f:section>
+
+<f:section name="customScript">
+    <script>
+        noDown = true;
+        function customSpeed() {
+            return 1000;
+        }
+    </script>
+</f:section>

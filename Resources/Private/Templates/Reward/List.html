@@ -1,0 +1,38 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+    <h1>Belohnungen</h1>
+    <p>
+        Für's Spielen wirst du belohnt, dafür musst du in bestimmten Modis eine gewisse Anzahl von Punkten erreichen.<br>
+        Damit du dich auch weiterhin auf dein Studium konzentrieren kannst und nicht die ganze Zeit nurnoch Zeit vor dem Computer verbringst, werden die Belohnungen nach und nach freigeschaltet.
+    </p>
+
+    <f:for each="{rewards}" as="reward">
+        <div class="mb-5">
+            <f:if condition="{reward.autoComplete} || {reward.completed}">
+                <f:then>
+                    <h2>{reward.title}</h2>
+                </f:then>
+                <f:else>
+                    <h2>Noch ein Geheimnis...</h2>
+                </f:else>
+            </f:if>
+            <f:if condition="{reward.completed}">
+                <p class="text-success"><i class="fas fa-fw fa-check"></i> Belohnung freigeschaltet und eingelöst.</p>
+            </f:if>
+
+
+            <div class="card-columns">
+                <f:for each="{reward.hints}" as="hint">
+                    <f:render partial="Hint/Show" arguments="{hint : hint}" />
+                </f:for>
+            </div>
+        </div>
+    </f:for>
+
+    <style>
+        .unlocked {
+            cursor: pointer;
+        }
+    </style>
+</f:section>

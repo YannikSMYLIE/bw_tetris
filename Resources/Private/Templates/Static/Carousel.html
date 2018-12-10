@@ -1,0 +1,23 @@
+{namespace bw=BoergenerWebdesign\BwTetris\ViewHelpers}
+<f:layout name="Game" />
+
+<f:section name="playground">
+    <f:render partial="Fields/Default" />
+</f:section>
+
+<f:section name="sidebar">
+    <f:render partial="Sidebar" arguments="{mode : 'carousel', name : name, beginOfGame : beginOfGame}" />
+</f:section>
+
+<f:section name="customScript">
+    <script>
+        let deg = 0;
+        function beforeNewElement() {
+            deg = deg + 90;
+            $('#playground').css("transform", "rotate(" + deg + "deg)");
+        }
+        function afterGameOver() {
+            $('#playground').css("transform", "rotate(0deg)");
+        }
+    </script>
+</f:section>

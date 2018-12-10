@@ -1,0 +1,71 @@
+{namespace bw=BoergenerWebdesign\BwTetris\ViewHelpers}
+<f:layout name="Default" />
+
+<f:section name="main">
+    <h1>Modus wählen</h1>
+
+
+    <div class="card-deck">
+        <div class="card">
+            <f:image class="card-img-top" src="EXT:bw_tetris/Resources/Public/Images/Modes/default.png" alt="{bw:mode(name : 'default')}" style="height: auto;" />
+            <div class="card-body">
+                <h5 class="card-title">{bw:mode(name : 'default')}</h5>
+                <p class="card-text">Der langweilige Standardmodus. Buuuh!</p>
+                <p class="card-text">
+                    <f:link.action action="default" class="btn btn-primary">Jetzt spielen!</f:link.action>
+                </p>
+            </div>
+        </div>
+        <div class="card">
+            <f:image class="card-img-top" src="EXT:bw_tetris/Resources/Public/Images/Modes/carousel.jpg" alt="{bw:mode(name : 'carousel')}" style="height: auto;" />
+            <div class="card-body">
+                <h5 class="card-title">{bw:mode(name : 'carousel')}</h5>
+                <p class="card-text">Noch eine R-R-R-R-R-Runde! Die nächste Fahrt rückwärts, alle EINSTEIGEN, ALLE EINSTEIGEN, jetzt gehts louououououos!</p>
+                <p class="card-text">
+                    <f:if condition="{carousel}">
+                        <f:then>
+                            <f:link.action action="carousel" class="btn btn-primary">Jetzt spielen!</f:link.action></f:then>
+                        <f:else>
+                            <a href="#" class="btn btn-primary disabled">Jetzt spielen!</a><br>
+                            <small class="text-danger">Noch nicht freigeschaltet!</small>
+                        </f:else>
+                    </f:if>
+                </p>
+            </div>
+        </div>
+        <div class="card">
+            <f:image class="card-img-top" src="EXT:bw_tetris/Resources/Public/Images/Modes/cube.jpg" alt="{bw:mode(name : 'cube')}" style="height: auto;" />
+            <div class="card-body">
+                <h5 class="card-title">{bw:mode(name : 'cube')}</h5>
+                <p class="card-text">Bilde ein Quadrat und räume ab!</p>
+                <p class="card-text">
+                    <f:if condition="{cube}">
+                        <f:then>
+                            <f:link.action action="cube" class="btn btn-primary">Jetzt spielen!</f:link.action></f:then>
+                        <f:else>
+                            <a href="#" class="btn btn-primary disabled">Jetzt spielen!</a><br>
+                            <small class="text-danger">Noch nicht freigeschaltet!</small>
+                        </f:else>
+                    </f:if>
+                </p>
+            </div>
+        </div>
+        <div class="card">
+            <f:image class="card-img-top" src="EXT:bw_tetris/Resources/Public/Images/Modes/old.jpg" alt="{bw:mode(name : 'old')}" style="height: auto;" />
+            <div class="card-body">
+                <h5 class="card-title">{bw:mode(name : 'old')}</h5>
+                <p class="card-text">Gaaaaaaaaaanz langsam!</p>
+                <p class="card-text">
+                    <f:if condition="{old}">
+                        <f:then>
+                            <f:link.action action="old" class="btn btn-primary">Jetzt spielen!</f:link.action></f:then>
+                        <f:else>
+                            <a href="#" class="btn btn-primary disabled">Jetzt spielen!</a><br>
+                            <small class="text-danger">Noch nicht freigeschaltet!</small>
+                        </f:else>
+                    </f:if>
+                </p>
+            </div>
+        </div>
+    </div>
+</f:section>
