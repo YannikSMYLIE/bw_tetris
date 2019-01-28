@@ -27,9 +27,7 @@ class StaticController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 
 
     public function selectModeAction() {
-        if(!isset($_COOKIE["name"])) {
-            header("Location: http://tetris.boergener.de?id=8");
-        }
+        $this -> checkUser();
 
         $notAntonia = isset($_COOKIE["name"]) && $_COOKIE["name"] != "Antonia";
 
@@ -43,17 +41,18 @@ class StaticController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $nowTime = new \DateTime();
 
         $this -> view -> assignMultiple([
-            'carousel' => $carouselHighscore != null && $nowTime >= $carouselTime || $notAntonia,
-            'cube' => $cubeHighscore != null && $nowTime >= $cubeTime || $notAntonia,
-            'old' => $oldHighscore != null && $nowTime >= $oldTime || $notAntonia,
+            'carousel' => true,
+            'cube' => false,
+            'old' => true,
+            //'carousel' => $carouselHighscore != null && $nowTime >= $carouselTime || $notAntonia,
+            //'cube' => $cubeHighscore != null && $nowTime >= $cubeTime || $notAntonia,
+            //'old' => $oldHighscore != null && $nowTime >= $oldTime || $notAntonia,
         ]);
 
     }
 
     public function defaultAction() {
-        if(!isset($_COOKIE["name"])) {
-            header("Location: http://tetris.boergener.de?id=8");
-        }
+        $this -> checkUser();
         $this -> view -> assignMultiple([
             'name' => $_COOKIE["name"],
             'beginOfGame' => time()
@@ -61,9 +60,7 @@ class StaticController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     public function carouselAction() {
-        if(!isset($_COOKIE["name"])) {
-            header("Location: http://tetris.boergener.de?id=8");
-        }
+        $this -> checkUser();
         $this -> view -> assignMultiple([
             'name' => $_COOKIE["name"],
             'beginOfGame' => time()
@@ -71,9 +68,7 @@ class StaticController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     public function cubeAction() {
-        if(!isset($_COOKIE["name"])) {
-            header("Location: http://tetris.boergener.de?id=8");
-        }
+        $this -> checkUser();
         $this -> view -> assignMultiple([
             'name' => $_COOKIE["name"],
             'beginOfGame' => time()
@@ -81,9 +76,7 @@ class StaticController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
     }
 
     public function oldAction() {
-        if(!isset($_COOKIE["name"])) {
-            header("Location: http://tetris.boergener.de?id=8");
-        }
+        $this -> checkUser();
         $this -> view -> assignMultiple([
             'name' => $_COOKIE["name"],
             'beginOfGame' => time()
@@ -101,8 +94,27 @@ class StaticController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
             $name = $this -> request -> getArgument("name");
         }
         setcookie("name", $name);
-        header("Location: http://tetris.boergener.de");
-        die();
+
+        $url = $this
+            ->controllerContext
+            ->getUriBuilder()
+            ->reset()
+            ->setTargetPageUid($this -> settings["gamePage"])
+            ->setCreateAbsoluteUri(true)
+            ->buildFrontendUri();
+        header("Location: ".$url);
     }
 
+    private function checkUser() {
+        if(!isset($_COOKIE["name"])) {
+            $url = $this
+                ->controllerContext
+                ->getUriBuilder()
+                ->reset()
+                ->setTargetPageUid($this -> settings["loginPage"])
+                ->setCreateAbsoluteUri(true)
+                ->buildFrontendUri();
+            header("Location: ".$url);
+        }
+    }
 }

@@ -1,25 +1,25 @@
 
-plugin.tx_bwtetris_game {
+plugin.tx_bwtetris {
   view {
     templateRootPaths.0 = EXT:bw_tetris/Resources/Private/Templates/
-    templateRootPaths.1 = {$plugin.tx_bwtetris_game.view.templateRootPath}
+    templateRootPaths.1 = {$plugin.tx_bwtetris.view.templateRootPath}
     partialRootPaths.0 = EXT:bw_tetris/Resources/Private/Partials/
-    partialRootPaths.1 = {$plugin.tx_bwtetris_game.view.partialRootPath}
+    partialRootPaths.1 = {$plugin.tx_bwtetris.view.partialRootPath}
     layoutRootPaths.0 = EXT:bw_tetris/Resources/Private/Layouts/
-    layoutRootPaths.1 = {$plugin.tx_bwtetris_game.view.layoutRootPath}
+    layoutRootPaths.1 = {$plugin.tx_bwtetris.view.layoutRootPath}
   }
   persistence {
-    storagePid = {$plugin.tx_bwtetris_game.persistence.storagePid}
-    #recursive = 1
+    storagePid = {$plugin.tx_bwtetris.persistence.storagePid}
   }
-  features {
-    #skipDefaultArguments = 1
-  }
-  mvc {
-    #callDefaultActionIfActionCantBeResolved = 1
-  }
+    settings = {$plugin.tx_bwtetris.settings}
 }
 
-plugin.tx_bwtetris_highscore < plugin.tx_bwtetris_game
-plugin.tx_bwtetris_rewards < plugin.tx_bwtetris_game
-plugin.tx_bwtetris_selectuser < plugin.tx_bwtetris_game
+# Partial
+page.10.partialRootPaths.10 = EXT:bw_tetris/Resources/Ext/bw_tetris_tmp/Private/Partials/
+
+# Benutzername
+lib.user = COA_INT
+lib.user {
+    1 = TEXT
+    1.data = global:_COOKIE|name
+}

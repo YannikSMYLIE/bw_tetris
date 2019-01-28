@@ -69,8 +69,11 @@ function resizePlayground() {
     const main = $('#main');
     const mainMarginTop = Number(main.css("margin-top").replace("px", ""));
     const mainMarginBottom = Number(main.css("margin-bottom").replace("px", ""));
-    // Maximale Höhe des Playgrounds (minus Puffer)
-    const maxMainHeight = windowHeight - headerHeight - mainMarginBottom - mainMarginTop - 10;
+
+    // Maximale Höhe des Playgrounds (minus Puffer und Rand)
+    const borderSize = Number($('#playground').css("border-left-width").replace("px", ""));
+    console.log(borderSize);
+    const maxMainHeight = windowHeight - headerHeight - mainMarginBottom - mainMarginTop - 10 - (borderSize*2);
 
     // Anzahl an Reihen berechnen
     const numOfRows = $('#playground').find('tr').length;

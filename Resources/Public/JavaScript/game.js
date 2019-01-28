@@ -250,9 +250,7 @@ function checkRow() {
         if(rowFinished) {
             finishedRows++;
             finishRow();
-            $(this).find('td:not(.border)').each(function() {
-                $(this).removeClass("occupied").addClass("blink");
-            });
+            $(this).addClass("finished");
         }
     });
 
@@ -260,8 +258,11 @@ function checkRow() {
         music.volume = 0.5
         $('#soundClear')[0].play();
         $('#playground').delay(1000).queue(function() {
-            $(this).find('.blink').each(function() {
-                $(this).removeClass("blink");
+            $(this).find('.finished').each(function() {
+                $(this).removeClass("finished");
+                $(this).find('td:not(.border)').each(function() {
+                    $(this).removeClass("occupied");
+                });
             });
             music.volume = 1
             bringDownTiles();

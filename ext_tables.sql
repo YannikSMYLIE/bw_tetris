@@ -8,7 +8,7 @@ CREATE TABLE tx_bwtetris_domain_model_highscore (
 
 	mode varchar(255) DEFAULT '' NOT NULL,
 	points int DEFAULT '0' NOT NULL,
-	date date DEFAULT '0000-00-00',
+	date datetime,
 	name varchar(255) DEFAULT '' NOT NULL,
 
 	stone_l int(11) unsigned DEFAULT '0' NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE tx_bwtetris_domain_model_hint(
 	reward int(11) unsigned NOT NULL default '0',
 	points int(11) DEFAULT '0' NOT NULL,
 	mode varchar(255) DEFAULT '' NOT NULL,
-	start date DEFAULT '0000-00-00',
+	start datetime,
 	text varchar(255) DEFAULT '' NOT NULL,
 	images int(11) unsigned NOT NULL default '0',
 	files int(11) unsigned NOT NULL default '0',

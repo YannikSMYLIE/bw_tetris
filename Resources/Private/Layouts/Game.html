@@ -38,23 +38,26 @@
             border-collapse: separate;
             border-spacing: 0;
         }
+        table#playground {
+            border-color: lightgrey;
+            border-style: solid;
+            border-width: 10px;
+        }
         table.gameover {
             opacity: 0.5;
         }
 
+        table#playground tr {
+            position: relative;
+        }
         td {
             height: 3.5vh;
             width: 3.5vh;
-        }
-
-        td {
             border: 1px solid #dee2e6;
-        }
-        td.border {
-            background-color: lightgrey;
+            z-index: 1;
         }
 
-        td.moving[data-type="I"], td.occupied[data-type="I"], td.blink[data-type="I"] {
+        td.moving[data-type="I"], td.occupied[data-type="I"], tr.finished td[data-type="I"] {
             background: #00f0f0;
             border-top-color: #b3fbfb;
             border-right-color: #00d8d8;
@@ -62,7 +65,7 @@
             border-left-color: #00d8d8;
             border-width: 3px;
         }
-        td.moving[data-type="J"], td.occupied[data-type="J"], td.blink[data-type="J"] {
+        td.moving[data-type="J"], td.occupied[data-type="J"], tr.finished td[data-type="J"] {
             background: #0000f0;
             border-top-color: #b3b3fb;
             border-right-color: #0000d8;
@@ -70,7 +73,7 @@
             border-left-color: #0000d8;
             border-width: 3px;
         }
-        td.moving[data-type="L"], td.occupied[data-type="L"], td.blink[data-type="L"] {
+        td.moving[data-type="L"], td.occupied[data-type="L"], tr.finished td[data-type="L"] {
             background: #f0a000;
             border-top-color: #fbe3b3;
             border-right-color: #d89000;
@@ -78,7 +81,7 @@
             border-left-color: #d89000;
             border-width: 3px;
         }
-        td.moving[data-type="O"], td.occupied[data-type="O"], td.blink[data-type="O"] {
+        td.moving[data-type="O"], td.occupied[data-type="O"], tr.finished td[data-type="O"] {
             background: #f0f000;
             border-top-color: #fbfbb3;
             border-right-color: #d8d800;
@@ -86,7 +89,7 @@
             border-left-color: #d8d800;
             border-width: 3px;
         }
-        td.moving[data-type="S"], td.occupied[data-type="S"], td.blink[data-type="S"] {
+        td.moving[data-type="S"], td.occupied[data-type="S"], tr.finished td[data-type="S"] {
             background: #00f000;
             border-top-color: #b3fbb3;
             border-right-color: #00d800;
@@ -94,7 +97,7 @@
             border-left-color: #00d800;
             border-width: 3px;
         }
-        td.moving[data-type="T"], td.occupied[data-type="T"], td.blink[data-type="T"] {
+        td.moving[data-type="T"], td.occupied[data-type="T"], tr.finished td[data-type="T"] {
             background: #a000f0;
             border-top-color: #e3b3fb;
             border-right-color: #9000d8;
@@ -102,7 +105,7 @@
             border-left-color: #9000d8;
             border-width: 3px;
         }
-        td.moving[data-type="Z"], td.occupied[data-type="Z"], td.blink[data-type="Z"] {
+        td.moving[data-type="Z"], td.occupied[data-type="Z"], tr.finished td[data-type="Z"] {
             background: #f00000;
             border-top-color: #fbb3b3;
             border-right-color: #d80000;
@@ -111,7 +114,7 @@
             border-width: 3px;
         }
 
-        td.blink {
+        tr.finished td.occupied {
             filter: invert(0%);
             animation: blink-animation 0.3s steps(2, start) infinite;
         }
@@ -133,6 +136,17 @@
             align-content: center;
             font-size: 3em;
             display: none;
+        }
+
+        .slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+        }
+        .slider .element {
         }
     </style>
 </div>

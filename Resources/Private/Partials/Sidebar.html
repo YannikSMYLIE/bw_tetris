@@ -84,7 +84,7 @@
 </div>
 
 <div id="form">
-    <f:form pageUid="2" controller="Highscore" action="create" pluginName="highscore" object="Highscore" objectName="newHighscore" class="d-none">
+    <f:form pageUid="{settings.highscorePage}" controller="Highscore" action="create" pluginName="highscore" object="Highscore" objectName="newHighscore" class="d-none">
         <hr>
         <label>Name:</label>
         <f:form.textfield property="name" value="{name}" class="name form-control" required="true" maxlength="15" readonly="true" />
@@ -123,27 +123,62 @@
 
 <style>
     table#next td {
-        border: 0;
+        border-width: 0px;
     }
-    table.I .x2y1, table.I .x2y2, table.I .x2y3, table.I .x2y4 {
-        background: red;
+    table#next.I .x2y1, table#next.I .x2y2, table#next.I .x2y3, table#next.I .x2y4 {
+        background: #00f0f0;
+        border-top-color: #b3fbfb;
+        border-right-color: #00d8d8;
+        border-bottom-color: #007878;
+        border-left-color: #00d8d8;
+        border-width: 3px;
     }
-    table.O .x1y1, table.O .x2y1, table.O .x1y2, table.O .x2y2 {
-        background: red;
+    table#next.O .x1y1, table#next.O .x2y1, table#next.O .x1y2, table#next.O .x2y2 {
+        background: #f0f000;
+        border-top-color: #fbfbb3;
+        border-right-color: #d8d800;
+        border-bottom-color: #787800;
+        border-left-color: #d8d800;
+        border-width: 3px;
     }
-    table.L .x2y1, table.L .x2y2, table.L .x2y3, table.L .x3y3 {
-        background: red;
+    table#next.L .x2y1, table#next.L .x2y2, table#next.L .x2y3, table#next.L .x3y3 {
+        background: #f0a000;
+        border-top-color: #fbe3b3;
+        border-right-color: #d89000;
+        border-bottom-color: #785000;
+        border-left-color: #d89000;
+        border-width: 3px;
     }
-    table.J .x2y1, table.J .x2y2, table.J .x2y3, table.J .x1y3 {
-        background: red;
+    table#next.J .x2y1, table#next.J .x2y2, table#next.J .x2y3, table#next.J .x1y3 {
+        background: #0000f0;
+        border-top-color: #b3b3fb;
+        border-right-color: #0000d8;
+        border-bottom-color: #000078;
+        border-left-color: #0000d8;
+        border-width: 3px;
     }
-    table.S .x1y3, table.S .x2y3, table.S .x2y2, table.S .x3y2 {
-        background: red;
+    table#next.S .x1y3, table#next.S .x2y3, table#next.S .x2y2, table#next.S .x3y2 {
+        background: #00f000;
+        border-top-color: #b3fbb3;
+        border-right-color: #00d800;
+        border-bottom-color: #007800;
+        border-left-color: #00d800;
+        border-width: 3px;
     }
-    table.Z .x1y2, table.Z .x2y2, table.Z .x2y3, table.Z .x3y3 {
-        background: red;
+    table#next.Z .x1y2, table#next.Z .x2y2, table#next.Z .x2y3, table#next.Z .x3y3 {
+        background: #f00000;
+        border-top-color: #fbb3b3;
+        border-right-color: #d80000;
+        border-bottom-color: #780000;
+        border-left-color: #d80000;
+        border-width: 3px;
     }
-    table.T .x1y3, table.T .x2y3, table.T .x3y3, table.T .x2y2 {
-        background: red;
+    table#next.T .x1y3, table#next.T .x2y3, table#next.T .x3y3, table#next.T .x2y2 {
+        background: #a000f0;
+        border-top-color: #e3b3fb;
+        border-right-color: #9000d8;
+        border-bottom-color: #500078;
+        border-left-color: #9000d8;
+        border-width: 3px;
     }
 </style>
