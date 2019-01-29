@@ -48,8 +48,7 @@ $('#start').click(function() {
 });
 function loop() {
     // Prüfen ob eine Reihe fertig ist
-    const finishedRows = checkRow();
-    if(finishedRows) {
+    if(checkRows()) {
         // Spiel fortsetzen
         timeout = setTimeout(loop, 1100);
         return false;
@@ -237,40 +236,31 @@ function rotate() {
 }
 
 // Reihe fertig
-function checkRow() {
-    let finishedRows = 0;
+function checkRows() {
+    // Ermittel alle fertigen Reihen
+    let rowsFinished = false;
     $('#playground').find('.field').each(function() {
-        let rowFinished = true;
-        $(this).find('td:not(.border)').each(function() {
-            if(!$(this).hasClass("occupied")) {
-                rowFinished = false;
-                return false;
-            }
-        });
-        if(rowFinished) {
-            finishedRows++;
+        const finished = $(this).find('td:not(.occupied)').length == 0;
+        if(finished) {
+            rowsFinished = true;
             finishRow();
             $(this).addClass("finished");
         }
     });
 
-    if(finishedRows) {
+    // Wenn eine Reihe fertiggestellt wurde
+    if(rowsFinished) {
         music.volume = 0.5
         $('#soundClear')[0].play();
         $('#playground').delay(1000).queue(function() {
-            $(this).find('.finished').each(function() {
-                $(this).removeClass("finished");
-                $(this).find('td:not(.border)').each(function() {
-                    $(this).removeClass("occupied");
-                });
-            });
+            while(bringDownTiles());
+
             music.volume = 1
-            bringDownTiles();
             $(this).dequeue();
         });
     }
 
-    return finishedRows;
+    return rowsFinished;
 }
 function finishRow() {
     clearedRows++;
@@ -309,8 +299,37 @@ function gameover() {
 
 // Wenn Reihe voll alle anderen nach unten verschieben
 function bringDownTiles() {
-    let found = false;
+    // Suche die erste fertige Reihe
+    const finishedRow = $('#playground').find('.finished').first();
+    if(finishedRow.length <= 0) {
+        return false;
+    }
+
+    // Entferne diese Reihe
+    finishedRow.removeClass("finished");
+    finishedRow.find('td').each(function() {
+        $(this).removeClass("occupied");
+    });
+    // Bringe alle anderen Blöcke darüber eins nach unten
+    let lineAbove = finishedRow.prev();
+    while(lineAbove.length) {
+        lineAbove.find('td.occupied').each(function() {
+            $(this).removeClass("occupied").addClass("moving");
+        });
+        lineAbove = lineAbove.prev();
+    }
+    while(down());
+
+    // Return
+    return true;
+
+    /*
     for(let y = $('#playground').find('.field').length - 1; y > 0; y--) {
+
+
+
+
+
         const curLine = $('#playground').find('.field[data-y=' + y + ']');
         const prevLine = $('#playground').find('.field[data-y=' + (y-1) + ']');
 
@@ -323,6 +342,18 @@ function bringDownTiles() {
         prevLine.find('td:not(.border).occupied').each(function () {
             $(this).addClass("moving").removeClass("occupied");
         });
-        while(down());
     }
+
+        /
+        .each(function() {
+        $(this).removeClass("finished");
+        $(this).find('td:not(.border)').each(function() {
+            $(this).removeClass("occupied");
+        });
+    });*/
+
+
+
+
+
 }
