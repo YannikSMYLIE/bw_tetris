@@ -46,15 +46,12 @@
         table.gameover {
             opacity: 0.5;
         }
-
-        table#playground tr {
-            position: relative;
-        }
         td {
             height: 3.5vh;
             width: 3.5vh;
             border: 1px solid #dee2e6;
             z-index: 1;
+            position: relative;
         }
 
         td.moving[data-type="I"], td.occupied[data-type="I"], tr.finished td[data-type="I"] {
@@ -142,9 +139,9 @@
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
             bottom: 0;
             z-index: 2;
+            width: 1000%
         }
         .slider .element {
         }
