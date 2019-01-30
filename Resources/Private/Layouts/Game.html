@@ -1,8 +1,11 @@
 
 <div class="tx-bw-tetris">
+
     <!-- Spiefeld und Sidebar -->
     <div style="display: flex; justify-content: center; align-items: stretch;">
-        <div style="padding: 0 10px; display: flex; justify-content: center; position: relative; flex-grow: 1;">
+        <div style="padding: 0 10px; display: flex; justify-content: center; position: relative; flex-grow: 1; position: relative;">
+            <!-- Punkteanzeige -->
+            <div id="showPoints"><div class="text"></div></div>
             <f:render section="playground" />
         </div>
         <div style="padding: 10px 30px;">
@@ -32,118 +35,168 @@
     <f:render section="customScript" optional="true" />
 
     <!-- Stylesheets -->
-    <style>
-        table {
-            transition: transform 1s;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-        table#playground {
-            border-color: lightgrey;
-            border-style: solid;
-            border-width: 10px;
-        }
-        table.gameover {
-            opacity: 0.5;
-        }
-        td {
-            height: 3.5vh;
-            width: 3.5vh;
-            border: 1px solid #dee2e6;
-            z-index: 1;
-            position: relative;
-        }
-
-        td.moving[data-type="I"], td.occupied[data-type="I"], tr.finished td[data-type="I"] {
-            background: #00f0f0;
-            border-top-color: #b3fbfb;
-            border-right-color: #00d8d8;
-            border-bottom-color: #007878;
-            border-left-color: #00d8d8;
-            border-width: 3px;
-        }
-        td.moving[data-type="J"], td.occupied[data-type="J"], tr.finished td[data-type="J"] {
-            background: #0000f0;
-            border-top-color: #b3b3fb;
-            border-right-color: #0000d8;
-            border-bottom-color: #000078;
-            border-left-color: #0000d8;
-            border-width: 3px;
-        }
-        td.moving[data-type="L"], td.occupied[data-type="L"], tr.finished td[data-type="L"] {
-            background: #f0a000;
-            border-top-color: #fbe3b3;
-            border-right-color: #d89000;
-            border-bottom-color: #785000;
-            border-left-color: #d89000;
-            border-width: 3px;
-        }
-        td.moving[data-type="O"], td.occupied[data-type="O"], tr.finished td[data-type="O"] {
-            background: #f0f000;
-            border-top-color: #fbfbb3;
-            border-right-color: #d8d800;
-            border-bottom-color: #787800;
-            border-left-color: #d8d800;
-            border-width: 3px;
-        }
-        td.moving[data-type="S"], td.occupied[data-type="S"], tr.finished td[data-type="S"] {
-            background: #00f000;
-            border-top-color: #b3fbb3;
-            border-right-color: #00d800;
-            border-bottom-color: #007800;
-            border-left-color: #00d800;
-            border-width: 3px;
-        }
-        td.moving[data-type="T"], td.occupied[data-type="T"], tr.finished td[data-type="T"] {
-            background: #a000f0;
-            border-top-color: #e3b3fb;
-            border-right-color: #9000d8;
-            border-bottom-color: #500078;
-            border-left-color: #9000d8;
-            border-width: 3px;
-        }
-        td.moving[data-type="Z"], td.occupied[data-type="Z"], tr.finished td[data-type="Z"] {
-            background: #f00000;
-            border-top-color: #fbb3b3;
-            border-right-color: #d80000;
-            border-bottom-color: #780000;
-            border-left-color: #d80000;
-            border-width: 3px;
-        }
-
-        tr.finished td.occupied {
-            filter: invert(0%);
-            animation: blink-animation 0.3s steps(2, start) infinite;
-        }
-
-        @keyframes blink-animation {
-            to {
-                filter: invert(100%);
-            }
-        }
-
-        #gameover {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            justify-content: center;
-            align-items: center;
-            align-content: center;
-            font-size: 3em;
-            display: none;
-        }
-
-        .slider {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            z-index: 2;
-            width: 1000%
-        }
-        .slider .element {
-        }
-    </style>
 </div>
+
+
+<style>
+    table {
+        transition: transform 1s;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    table#playground {
+        border-color: lightgrey;
+        border-style: solid;
+        border-width: 10px;
+    }
+    table.gameover {
+        opacity: 0.5;
+    }
+    td {
+        height: 3.5vh;
+        width: 3.5vh;
+        border: 1px solid #dee2e6;
+        z-index: 1;
+        position: relative;
+    }
+
+    td.moving[data-type="I"], td.occupied[data-type="I"], tr.finished td[data-type="I"] {
+        background: #00f0f0;
+        border-top-color: #b3fbfb;
+        border-right-color: #00d8d8;
+        border-bottom-color: #007878;
+        border-left-color: #00d8d8;
+        border-width: 3px;
+    }
+    td.moving[data-type="J"], td.occupied[data-type="J"], tr.finished td[data-type="J"] {
+        background: #0000f0;
+        border-top-color: #b3b3fb;
+        border-right-color: #0000d8;
+        border-bottom-color: #000078;
+        border-left-color: #0000d8;
+        border-width: 3px;
+    }
+    td.moving[data-type="L"], td.occupied[data-type="L"], tr.finished td[data-type="L"] {
+        background: #f0a000;
+        border-top-color: #fbe3b3;
+        border-right-color: #d89000;
+        border-bottom-color: #785000;
+        border-left-color: #d89000;
+        border-width: 3px;
+    }
+    td.moving[data-type="O"], td.occupied[data-type="O"], tr.finished td[data-type="O"] {
+        background: #f0f000;
+        border-top-color: #fbfbb3;
+        border-right-color: #d8d800;
+        border-bottom-color: #787800;
+        border-left-color: #d8d800;
+        border-width: 3px;
+    }
+    td.moving[data-type="S"], td.occupied[data-type="S"], tr.finished td[data-type="S"] {
+        background: #00f000;
+        border-top-color: #b3fbb3;
+        border-right-color: #00d800;
+        border-bottom-color: #007800;
+        border-left-color: #00d800;
+        border-width: 3px;
+    }
+    td.moving[data-type="T"], td.occupied[data-type="T"], tr.finished td[data-type="T"] {
+        background: #a000f0;
+        border-top-color: #e3b3fb;
+        border-right-color: #9000d8;
+        border-bottom-color: #500078;
+        border-left-color: #9000d8;
+        border-width: 3px;
+    }
+    td.moving[data-type="Z"], td.occupied[data-type="Z"], tr.finished td[data-type="Z"] {
+        background: #f00000;
+        border-top-color: #fbb3b3;
+        border-right-color: #d80000;
+        border-bottom-color: #780000;
+        border-left-color: #d80000;
+        border-width: 3px;
+    }
+
+    tr.finished td.occupied {
+        filter: invert(0%);
+        animation: blink-animation 0.3s steps(2, start) infinite;
+    }
+
+    @keyframes blink-animation {
+        to {
+            filter: invert(100%);
+        }
+    }
+
+    #gameover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        font-size: 3em;
+        display: none;
+    }
+
+    .slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 2;
+        width: 1000%
+    }
+    .slider .element {
+    }
+
+    /* Punkte anzeigen */
+    #showPoints {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 999;
+    }
+    #showPoints.visible  {
+        display: flex;
+    }
+    #showPoints.visible .text {
+        font-size: 5em;
+        color: #000;
+        text-shadow:  1px  1px 1px #FFF,
+        1px -1px 1px #FFF,
+        -1px  1px 1px #FFF,
+        -1px -1px 1px #FFF;
+        animation-name: rotate;
+        animation-duration: 1s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
+    @keyframes rotate {
+        0%   {
+            transform: rotate(-20deg);
+            font-size: 3em;
+            color: #000;
+        }
+        25%  {
+        }
+        50%  {
+            font-size: 8em;
+            color: red;
+        }
+        75% {
+        }
+        100% {
+            transform: rotate(20deg);
+            font-size: 3em;
+            color: #000;
+        }
+    }
+</style>

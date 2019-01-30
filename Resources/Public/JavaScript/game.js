@@ -2,9 +2,10 @@ let timeout = null;
 let mode = "newElement";
 let movingElement = 0;
 
-let level = 1;
+let level = 0;
 let clearedRows = 0;
 let points = 0;
+let rowsToClear = 0;
 
 let music = 0;
 
@@ -31,10 +32,12 @@ $('#start').click(function() {
         music.play();
 
         // Level auslesen
-        level = $('#startLevel').val();
+        level = Number($('#startLevel').val());
         $('#level').html(level);
-        $('#level').parent().removeClass("d-none");
-        $('#startLevel').hide();
+
+        // Zu clearende Reihen angeben
+        rowsToClear = level * 10 + 10;
+        $('#toClear').html(rowsToClear);
 
         // Scrollleiste sperren
         $('body').css("overflow", "hidden");
@@ -42,7 +45,14 @@ $('#start').click(function() {
         $('#form input.name').prop("readonly", true);
         $('#start').hide();
         $('#pause').show();
-        loop();
+
+        $('#startLevel').fadeOut().queue(function() {
+            $('#levelContainer').removeClass("d-none").hide().fadeIn().queue(function() {
+                loop();
+                $(this).dequeue();
+            });
+            $(this).dequeue();
+        });
     }
     return false;
 });
@@ -238,18 +248,17 @@ function rotate() {
 // Reihe fertig
 function checkRows() {
     // Ermittel alle fertigen Reihen
-    let rowsFinished = false;
+    let finishedRows = 0;
     $('#playground').find('.field').each(function() {
-        const finished = $(this).find('td:not(.occupied)').length == 0;
-        if(finished) {
-            rowsFinished = true;
-            finishRow();
+        if($(this).find('td:not(.occupied)').length == 0) {
+            finishedRows++;
             $(this).addClass("finished");
         }
     });
 
     // Wenn eine Reihe fertiggestellt wurde
-    if(rowsFinished) {
+    if(finishedRows > 0) {
+        finishRows(finishedRows);
         music.volume = 0.5
         $('#soundClear')[0].play();
         $('#playground').delay(1000).queue(function() {
@@ -260,24 +269,48 @@ function checkRows() {
         });
     }
 
-    return rowsFinished;
+    return finishedRows > 0;
 }
-function finishRow() {
-    clearedRows++;
+function finishRows(amount) {
+    clearedRows += amount;
 
     // Punkte vergeben
-    points += level*10;
+    let pointsToAdd = 0;
+    switch(amount) {
+        case 1:
+            pointsToAdd = 40*(level+1);
+            break;
+        case 2:
+            pointsToAdd = 100*(level+1);
+            break;
+        case 3:
+            pointsToAdd = 300*(level+1);
+            break;
+        case 4:
+            pointsToAdd = 1200*(level+1);
+            break;
+    }
+    points += pointsToAdd;
+
+    // Punkte eiblenden
+    $('#showPoints .text').html(pointsToAdd);
+    $('#showPoints').addClass("visible").delay(1000).queue(function() {
+        $(this).removeClass("visible");
+        $(this).dequeue();
+    });
 
     // Levle up?
     if(clearedRows == 10) {
         level++;
-        clearedRows = 0;
+        clearedRows = clearedRows % 10;
+        rowsToClear = 10;
     }
 
     // GUI anpassen
     $('#score').html(points);
     $('#level').html(level);
     $('#cleared').html(clearedRows);
+    $('#toClear').html(rowsToClear);
 }
 
 // Gameover
@@ -322,38 +355,4 @@ function bringDownTiles() {
 
     // Return
     return true;
-
-    /*
-    for(let y = $('#playground').find('.field').length - 1; y > 0; y--) {
-
-
-
-
-
-        const curLine = $('#playground').find('.field[data-y=' + y + ']');
-        const prevLine = $('#playground').find('.field[data-y=' + (y-1) + ']');
-
-        // Es ist nicht möglich dass es eine leere Zeile gibt welche drüber eine volle hat.
-        if(prevLine.length == 0 || curLine.find('.occupied').length > 0 || prevLine.find('.occupied').length == 0) {
-            continue;
-        }
-
-        // Alle darüber als moving markieren und nach unten verschieben
-        prevLine.find('td:not(.border).occupied').each(function () {
-            $(this).addClass("moving").removeClass("occupied");
-        });
-    }
-
-        /
-        .each(function() {
-        $(this).removeClass("finished");
-        $(this).find('td:not(.border)').each(function() {
-            $(this).removeClass("occupied");
-        });
-    });*/
-
-
-
-
-
 }
