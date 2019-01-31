@@ -300,14 +300,14 @@ function finishRows(amount) {
     });
 
     // Levle up?
-    if(clearedRows == 10) {
+    if(clearedRows >= rowsToClear) {
         level++;
         clearedRows = clearedRows % 10;
         rowsToClear = 10;
     }
 
     // GUI anpassen
-    $('#score').html(points);
+    $('#score').html(points.toLocaleString('de-DE'));
     $('#level').html(level);
     $('#cleared').html(clearedRows);
     $('#toClear').html(rowsToClear);
