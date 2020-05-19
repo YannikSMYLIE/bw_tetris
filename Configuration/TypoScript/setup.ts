@@ -1,4 +1,4 @@
-
+# Plugin
 plugin.tx_bwtetris {
   view {
     templateRootPaths.0 = EXT:bw_tetris/Resources/Private/Templates/
@@ -14,12 +14,33 @@ plugin.tx_bwtetris {
     settings = {$plugin.tx_bwtetris.settings}
 }
 
-# Partial
-page.10.partialRootPaths.10 = EXT:bw_tetris/Resources/Ext/bw_tetris_tmp/Private/Partials/
+# AJAX Call
+bwtetris_ajax = PAGE
+bwtetris_ajax {
+  typeNum = 171994
+  10 < tt_content.list.20.bwtetris_highscore
+  config {
+    disableAllHeaderCode = 1
+    additionalHeaders = Content-type:application/json
+    xhtml_cleaning = 0
+    admPanel = 0
+    debug = 0
+    no_cache = 1
+  }
+}
 
-# Benutzername
-lib.user = COA_INT
-lib.user {
-    1 = TEXT
-    1.data = global:_COOKIE|name
+# Includes
+page {
+  includeCSS {
+    bw_tetris = EXT:bw_tetris/Resources/Public/Css/bw_tetris.scss
+  }
+
+  includeJSFooter {
+    bw_tetris_helper = EXT:bw_tetris/Resources/Public/JavaScript/helper.js
+    bw_tetris_elements = EXT:bw_tetris/Resources/Public/JavaScript/elements.js
+    bw_tetris_peripherals = EXT:bw_tetris/Resources/Public/JavaScript/peripherals.js
+    bw_tetris_game = EXT:bw_tetris/Resources/Public/JavaScript/game.js
+    bw_tetris_controls = EXT:bw_tetris/Resources/Public/JavaScript/controls.js
+    bw_tetris_nongame = EXT:bw_tetris/Resources/Public/JavaScript/nonegame.js
+  }
 }

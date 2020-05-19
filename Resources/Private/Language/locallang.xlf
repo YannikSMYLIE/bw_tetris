@@ -25,6 +25,9 @@
 			<trans-unit id="tx_bwtetris_domain_model_highscore.name">
 				<source>Name</source>
 			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_highscore.fe_user">
+				<source>Frontend Benutzer</source>
+			</trans-unit>
 			<trans-unit id="tx_bwtetris_domain_model_highscore.stone_l">
 				<source>Anzahl Stein vom Typ L</source>
 			</trans-unit>
@@ -108,14 +111,27 @@
 				<source>Belohnung</source>
 			</trans-unit>
 
-			<trans-unit id="tx_bwtetris_domain_model_person">
-				<source>Person</source>
+			<!-- Controlls -->
+			<trans-unit id="tx_bwtetris_domain_model_controlls">
+				<source>Steuerung</source>
 			</trans-unit>
-			<trans-unit id="tx_bwtetris_domain_model_person.image">
-				<source>Bild</source>
+			<trans-unit id="tx_bwtetris_domain_model_controlls.down">
+				<source>Ein Feld nach unten</source>
 			</trans-unit>
-			<trans-unit id="tx_bwtetris_domain_model_person.name">
-				<source>Name</source>
+			<trans-unit id="tx_bwtetris_domain_model_controlls.left">
+				<source>Ein Feld nach links</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_controlls.right">
+				<source>Ein Feld nach rechts</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_controlls.rotate">
+				<source>Drehen</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_controlls.drop">
+				<source>Fallen lassen</source>
+			</trans-unit>
+			<trans-unit id="tx_bwtetris_domain_model_controlls.pause">
+				<source>Spiel pausieren und fortsetzen</source>
 			</trans-unit>
 		</body>
 	</file>

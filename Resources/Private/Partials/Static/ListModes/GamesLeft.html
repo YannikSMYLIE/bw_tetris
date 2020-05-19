@@ -1,0 +1,37 @@
+<div class="alert {f:if(condition : gamesleft, then : 'alert-success', else : 'alert-danger')}" style="font-size: 0.8em;">
+    <strong style="font-family: Tetris !important;">Restliche Spiele</strong><br>
+    <f:if condition="{gamesleft}">
+        <f:then>
+            Du hast noch <strong>{gamesleft}</strong> Spiele übrig!
+        </f:then>
+        <f:else>
+            Du hast keine Spiele übrig!
+        </f:else>
+    </f:if>
+
+    <f:if condition="{gamesleft} < 5">
+        <f:then>
+            <div class="bg-secondary nextgame" style="position: relative;" data-at="{nextgame}">
+                <div class="bg-success" style="position: absolute; width: 50%; top: 0; bottom: 0; left: 0;">
+                    <span class="timeleft"></span>
+                </div>
+                <span class="timeleft">&nbsp;</span>
+            </div>
+        </f:then>
+        <f:else>
+            <div class="bg-success">
+                <span class="timeleft">Maximale Anzahl an Spielen erreicht</span>
+            </div>
+        </f:else>
+    </f:if>
+</div>
+<style>
+    .nextgame, .nextgame .bg-success {
+        overflow: hidden;
+    }
+    .timeleft {
+        padding-left: 15px; color: #FFF;
+        white-space: nowrap;
+        width: 500px;
+    }
+</style>

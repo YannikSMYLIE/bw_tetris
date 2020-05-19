@@ -1,0 +1,25 @@
+<div class="alert {f:if(condition : gamesleft, then : 'alert-success', else : 'alert-danger')}" style="font-size: 0.8em;">
+    <strong style="font-family: Tetris !important;">Neues Spiel starten</strong><br>
+    <f:if condition="{gamesleft}">
+        <f:then>
+            <f:link.action controller="Static" action="{currentModeLc}" class="btn btn-success btn-sm" pageUid="{settings.gamePage}" pluginName="Game">
+                <strong>{gamesleft}</strong> Spiele übrig - jetzt spielen!
+            </f:link.action>
+        </f:then>
+        <f:else>
+            <div class="btn btn-sm btn-text disabled">
+                Du hast keine Spiele übrig!
+            </div>
+        </f:else>
+    </f:if>
+</div>
+<style>
+    .nextgame, .nextgame .bg-success {
+        overflow: hidden;
+    }
+    .timeleft {
+        padding-left: 15px; color: #FFF;
+        white-space: nowrap;
+        width: 500px;
+    }
+</style>

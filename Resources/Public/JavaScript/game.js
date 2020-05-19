@@ -1,11 +1,23 @@
 let timeout = null;
 let mode = "newElement";
 let movingElement = 0;
+let nextElement = rand(0, elements.length - 1);
 
 let level = 0;
 let clearedRows = 0;
 let points = 0;
 let rowsToClear = 0;
+let field = createField(10, 20);
+let controls = {
+    left : Number($('.tx-bw-tetris .controls span[data-action="left"]').attr("data-key")),
+    right : Number($('.tx-bw-tetris .controls span[data-action="right"]').attr("data-key")),
+    down : Number($('.tx-bw-tetris .controls span[data-action="down"]').attr("data-key")),
+    drop : Number($('.tx-bw-tetris .controls span[data-action="drop"]').attr("data-key")),
+    rotate : Number($('.tx-bw-tetris .controls span[data-action="rotate"]').attr("data-key")),
+    pause : 80,
+};
+console.log(controls);
+console.log(field);
 
 let music = 0;
 
@@ -19,264 +31,118 @@ function speed() {
 
 
 $('#start').click(function() {
-    if($('#form input.name').val()) {
-        // Musik festlegen
-        const musicId = index = rand(0, 40);
-        if(musicId >= 0 && musicId < 20) {
-            music = $('#musicA')[0];
-        } else if(musicId >= 25 && musicId < 40) {
-            music = $('#musicB')[0];
-        } else {
-            music = $('#musicC')[0];
-        }
-        music.play();
+    // Musik festlegen
+    music = getMusic($('#music'));
+    music.play();
 
-        // Level auslesen
-        level = Number($('#startLevel').val());
-        $('#level').html(level);
+    // Level auslesen
+    level = Number($('#startLevel').val());
+    $('#level').html(level);
 
-        // Zu clearende Reihen angeben
-        rowsToClear = level * 10 + 10;
-        $('#toClear').html(rowsToClear);
+    // Zu clearende Reihen angeben
+    rowsToClear = level * 10 + 10;
+    $('#toClear').html(rowsToClear);
 
-        // Scrollleiste sperren
-        $('body').css("overflow", "hidden");
+    // Scrollleiste sperren
+    $('body').css("overflow", "hidden");
 
-        $('#form input.name').prop("readonly", true);
-        $('#start').hide();
-        $('#pause').show();
+    $('#form input.name').prop("readonly", true);
+    $('#start').hide();
+    $('#pause').show();
 
-        $('#startLevel').fadeOut().queue(function() {
-            $('#levelContainer').removeClass("d-none").hide().fadeIn().queue(function() {
-                loop();
-                $(this).dequeue();
-            });
+    $('#startLevel').fadeOut().queue(function() {
+        $('#levelContainer').removeClass("d-none").hide().fadeIn().queue(function() {
+            loop();
             $(this).dequeue();
         });
-    }
+        $(this).dequeue();
+    });
     return false;
 });
-function loop() {
-    // Prüfen ob eine Reihe fertig ist
-    if(checkRows()) {
-        // Spiel fortsetzen
-        timeout = setTimeout(loop, 1100);
-        return false;
-    }
 
-    // Prüfen ob das Spiel vorbei ist
-    for(let i = 0; i < 10; i++) {
-        const tile = $('#playground td[data-x="' + i + '"][data-y="0"]');
-        if(tile.hasClass("occupied")) {
-            mode = "gameover";
+
+/**
+ * Prüft welche Reihen fertig sind.
+ * @returns {boolean}
+ */
+function checkRows() {
+    // Fertige Reihen ermitteln
+    const clearedRows = [];
+    for(let y = 0; y < field.length; y++) {
+        let toClear = true;
+        for(let x = 0; x < field[y].length && toClear; x++) {
+            if(field[y][x].state != "occupied") {
+                toClear = false;
+            }
         }
-    }
-
-    switch(mode) {
-        case "newElement":
-            newElement();
-            mode = "down";
-            loop();
-            break;
-        case "down":
-            timeout = setTimeout(function() {
-                if(!down()) {
-                    mode = "newElement";
-                }
-                loop();
-            }, speed());
-            break;
-        case "gameover":
-            gameover();
-            break;
-    }
-}
-
-let nextElement = rand(0, (Object.keys(elements).length) - 1);
-function newElement(index) {
-    if(typeof beforeNewElement !== "undefined") {
-        beforeNewElement();
-    }
-
-    if(typeof index !== "undefined") {
-        nextElement = index
-    }
-
-    elements[nextElement]["chords"].forEach(function(coordinates) {
-        const tile = $('#playground td[data-x="' + coordinates.x + '"][data-y="' + coordinates.y + '"]');
-        tile.addClass("moving").attr("data-rx", coordinates.rotateX).attr("data-ry", coordinates.rotateY).attr("data-type", elements[nextElement].name);
-    });
-
-    // Debug
-    let input = null;
-    switch(nextElement) {
-        case 0: input = $('#form input.stoneI'); break;
-        case 1: input = $('#form input.stoneL'); break;
-        case 2: input = $('#form input.stoneJ'); break;
-        case 3: input = $('#form input.stoneO'); break;
-        case 4: input = $('#form input.stoneZ'); break;
-        case 5: input = $('#form input.stoneS'); break;
-        case 6: input = $('#form input.stoneT'); break;
-    }
-    const val = Number(input.val());
-    input.val(val + 1);
-
-    nextElement = rand(0, (Object.keys(elements).length) - 1);
-    $('#next').attr("class", elements[nextElement]["name"]);
-}
-
-
-
-
-
-
-// Bewegen
-function down() {
-    return move(0, 1, true);
-}
-function right() {
-    const input = $('#form input.keyRight');
-    const val = Number(input.val());
-    input.val(val + 1);
-
-    return move(1, 0, false);
-}
-function left() {
-    const input = $('#form input.keyLeft');
-    const val = Number(input.val());
-    input.val(val + 1);
-
-    return move(-1, 0, false);
-}
-function move(byX, byY, occupy) {
-    const movingTiles = $('#playground').find('.moving');
-
-    // Prüfen ob man schon am rechten Rand ist
-    let move = true;
-    movingTiles.each(function() {
-        const x = Number($(this).data("x"));
-        const y = Number($(this).data("y"));
-        const targetTile = $('#playground td[data-x="' + (x + byX) + '"][data-y="' + (y + byY) + '"]');
-        if(!targetTile.length || targetTile.hasClass("occupied")) {
-            move = false;
-            return false;
-        }
-    });
-    if(!move) {
-        if(occupy) {
-            movingTiles.each(function() {
-                $(this).removeClass("moving").addClass("occupied");
+        if(toClear) {
+            clearedRows.push({
+                row: field[y],
+                y : y
             });
         }
-        return false;
     }
-
-    // Verschieben
-    movingTiles.each(function() {
-        const x = Number($(this).data("x"));
-        const y = Number($(this).data("y"));
-        const targetTile = $('#playground td[data-x="' + (x + byX) + '"][data-y="' + (y + byY) + '"]');
-
-        // Daten uebertragen
-        targetTile.addClass("movingNext");
-        targetTile.attr("data-rx-next", $(this).attr("data-rx"));
-        targetTile.attr("data-ry-next", $(this).attr("data-ry"));
-        targetTile.attr("data-type", $(this).attr("data-type"));
-
-        $(this).removeClass("moving");
-    });
-
-    // Dann am Ende alle auf fertig setzen
-    $('#playground').find('.movingNext').each(function() {
-        $(this).addClass("moving").attr("data-rx", $(this).attr("data-rx-next")).attr("data-ry", $(this).attr("data-ry-next"));
-        $(this).removeClass("movingNext").removeAttr("data-rx-next").removeAttr("data-ry-next");
-    });
-    return true;
+    return clearedRows;
 }
 
-// Rotieren
-function rotate() {
-    const input = $('#form input.rotate');
-    const val = Number(input.val());
-    input.val(val + 1);
-
-    const movingTiles = $('#playground').find('.moving');
-
-    // Prüfen ob man rotieren kann
-    let move = true;
-    movingTiles.each(function() {
-        const x = Number($(this).data("x"));
-        const y = Number($(this).data("y"));
-        const rX = Number($(this).attr("data-rx"));
-        const rY = Number($(this).attr("data-ry"));
-        const targetTile = $('#playground td[data-x="' + (x + rX) + '"][data-y="' + (y + rY) + '"]');
-        if(!targetTile.length || targetTile.hasClass("occupied")) {
-            move = false;
-            return false;
-        }
-    });
-    if(!move) {
-        return false;
-    }
-
-    // Verschieben
-    movingTiles.each(function() {
-        const x = Number($(this).data("x"));
-        const y = Number($(this).data("y"));
-        const rX = Number($(this).attr("data-rx"));
-        const rY = Number($(this).attr("data-ry"));
-        const targetTile = $('#playground td[data-x="' + (x + rX) + '"][data-y="' + (y + rY) + '"]'); // hier je nach Rotatemode etwas anderes
-        const newRotate = {rx : -rY, ry : rX}
-
-        // Daten uebertragen
-        targetTile.addClass("movingNext");
-        targetTile.attr("data-rx-next", newRotate.rx);
-        targetTile.attr("data-ry-next", newRotate.ry);
-        targetTile.attr("data-type", $(this).attr("data-type"));
-
-        $(this).removeClass("moving");
+/**
+ * Startet die Animation für die abgeschlossenen Reihen.
+ * @param rows
+ */
+function finishRows(rows) {
+    // Animation starten
+    rows.forEach(function(rowData) {
+        const row = $('#playground tr').eq(rowData.y);
+        row.addClass("finished");
     });
 
-    // Dann am Ende alle auf fertig setzen
-    $('#playground').find('.movingNext').each(function() {
-        $(this).addClass("moving").attr("data-rx", $(this).attr("data-rx-next")).attr("data-ry", $(this).attr("data-ry-next"));
-        $(this).removeClass("movingNext").removeAttr("data-rx-next").removeAttr("data-ry-next");
-    });
-    return true;
-}
-
-// Reihe fertig
-function checkRows() {
-    // Ermittel alle fertigen Reihen
-    let finishedRows = 0;
-    $('#playground').find('.field').each(function() {
-        if($(this).find('td:not(.occupied)').length == 0) {
-            finishedRows++;
-            $(this).addClass("finished");
-        }
-    });
-
-    // Wenn eine Reihe fertiggestellt wurde
-    if(finishedRows > 0) {
-        finishRows(finishedRows);
-        music.volume = 0.5
-        $('#soundClear')[0].play();
-        $('#playground').delay(1000).queue(function() {
-            while(bringDownTiles());
-
-            music.volume = 1
-            $(this).dequeue();
+    // Animation beenden
+    $('#playground').delay(1000).queue(function() {
+        rows.forEach(function(rowData) {
+            const row = $('#playground tr').eq(rowData.y);
+            row.removeClass("finished");
+            bringDownTiles(rowData.y);
         });
-    }
+        $(this).dequeue();
+    });
 
-    return finishedRows > 0;
+    // Spiel fortsetzen
+    redrawPlayground();
+    timeout = setTimeout(loop, 1100);
 }
-function finishRows(amount) {
-    clearedRows += amount;
 
+/**
+ * Verschiebt alle Felder über einer Reihe nach unten.
+ * @param y
+ */
+function bringDownTiles(y) {
+    // Reihe löschen
+    for(let x = 0; x < field[y].length; x++) {
+        field[y][x] = {
+            state : 'free'
+        };
+    }
+    // Nach unten bringen
+    for(let newY = Number(y) - 1; newY >= 0; newY--) {
+        const field2 = field;
+        for(let x = 0; x < field[newY].length; x++) {
+            if(field[newY][x].state == "occupied") {
+                field[newY + 1][x].new = JSON.parse(JSON.stringify(field[newY][x]));
+                field[newY][x].moved = true;
+            }
+        }
+    }
+    acceptChanges();
+}
+
+/**
+ * Erhöht die Punkte und das Level anhand der erledigten Reihen.
+ * @param rows
+ */
+function addPoints(rows) {
     // Punkte vergeben
     let pointsToAdd = 0;
-    switch(amount) {
+    switch(rows.length) {
         case 1:
             pointsToAdd = 40*(level+1);
             break;
@@ -300,6 +166,7 @@ function finishRows(amount) {
     });
 
     // Levle up?
+    clearedRows += rows.length;
     if(clearedRows >= rowsToClear) {
         level++;
         clearedRows = clearedRows % 10;
@@ -308,12 +175,29 @@ function finishRows(amount) {
 
     // GUI anpassen
     $('#score').html(points.toLocaleString('de-DE'));
+    $('#form input.points').val(points);
     $('#level').html(level);
     $('#cleared').html(clearedRows);
     $('#toClear').html(rowsToClear);
+    saveScore();
 }
 
-// Gameover
+/**
+ * Prüft, ob das Spiel zu Ende ist.
+ * @returns {boolean}
+ */
+function isGameover() {
+    for(let x = 0; x < field[0].length; x++) {
+        if(field[0][x].state == "occupied") {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Zeigt den Gameover Bildschirm an.
+ */
 function gameover() {
     $('#playground').addClass("gameover");
     $('#gameover').addClass("d-flex");
@@ -330,29 +214,286 @@ function gameover() {
     }, 3000);
 }
 
-// Wenn Reihe voll alle anderen nach unten verschieben
-function bringDownTiles() {
-    // Suche die erste fertige Reihe
-    const finishedRow = $('#playground').find('.finished').first();
-    if(finishedRow.length <= 0) {
-        return false;
+/**
+ * Fügt dem Spielfeld ein neues Element hinzu.
+ * @param index
+ */
+function newElement(index) {
+    if(typeof beforeNewElement !== "undefined") {
+        beforeNewElement();
     }
 
-    // Entferne diese Reihe
-    finishedRow.removeClass("finished");
-    finishedRow.find('td').each(function() {
-        $(this).removeClass("occupied");
+    let nextElementId;
+    if(typeof index !== "undefined") {
+        nextElementId = index
+    } else {
+        nextElementId = rand(0, elements.length - 1);
+    }
+
+    const nextElement = elements[nextElementId];
+    nextElement["chords"].forEach(function(coordinates) {
+        field[coordinates.y][coordinates.x] = {
+            state : "moving",
+            rotate : {
+                x : coordinates.rotateX,
+                y: coordinates.rotateY
+            },
+            type : nextElement
+        }
     });
-    // Bringe alle anderen Blöcke darüber eins nach unten
-    let lineAbove = finishedRow.prev();
-    while(lineAbove.length) {
-        lineAbove.find('td.occupied').each(function() {
-            $(this).removeClass("occupied").addClass("moving");
-        });
-        lineAbove = lineAbove.prev();
-    }
-    while(down());
+}
 
-    // Return
+/**
+ * Zeichnet des Spielfeld.
+ */
+function redrawPlayground() {
+    for(let y = 0; y < field.length; y++) {
+        for(let x = 0; x < field[y].length; x++) {
+            const cellData = field[y][x];
+            const cell = $('#playground tr').eq(y).find('td').eq(x);
+            if(cell.type == "free") {
+                cell.attr("class", "");
+                cell.attr("data-type", "");
+            } else {
+                cell.attr("class", cellData.state);
+                if(cellData.state != "free") {
+                    cell.attr("data-type", cellData.type.name);
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Bewegt alle beweglichen Steine um ein Feld nach unten.
+ * @returns {boolean}
+ */
+function down() {
+    const moved = move(0, 1);
+    if(!moved) {
+        setOccupied();
+        mode = "newElement";
+    }
+    redrawPlayground();
+    return moved;
+}
+
+/**
+ * Bewegt alle beweglichen Steine so weit nach unten wie möglich.
+ * @returns {boolean}
+ */
+function allDown() {
+    clearTimeout(timeout);
+    while(move(0, 1));
+    mode = "newElement";
+    setOccupied();
+    redrawPlayground();
+    loop();
+    return false;
+}
+
+/**
+ * Bewegt alle beweglichen Steine um ein Feld nach rechts.
+ * @returns {boolean}
+ */
+function right() {
+    const input = $('#form input.keyRight');
+    const val = Number(input.val());
+    input.val(val + 1);
+
+    const moved = move(1, 0);
+    redrawPlayground();
+    return moved;
+}
+
+/**
+ * Bewegt alle bewglichen Steine um ein Feld nach links.
+ * @returns {boolean}
+ */
+function left() {
+    const input = $('#form input.keyLeft');
+    const val = Number(input.val());
+    input.val(val + 1);
+
+    const moved = move(-1, 0);
+    redrawPlayground();
+    return moved;
+}
+
+/**
+ * Bewegt alle beweglichen Steine.
+ * @param byX
+ * @param byY
+ * @returns {boolean}
+ */
+function move(byX, byY) {
+    // Prüfen ob das Feld frei ist, auf das verschoben werden soll.
+    for(let y = 0; y < field.length; y++) {
+        for(let x = 0; x < field[y].length; x++) {
+            if(field[y][x].state == "moving") {
+                const newX = x + byX;
+                const newY = y + byY;
+                if(newX < 0 || newX >= field[0].length || newY < 0 || newY >= field.length || field[newY][newX].state == "occupied") {
+                    return false;
+                }
+            }
+        }
+    }
+
+    // Verschieben
+    for(let y = 0; y < field.length; y++) {
+        for(let x = 0; x < field[y].length; x++) {
+            if(field[y][x].state == "moving") {
+                const newX = x + byX;
+                const newY = y + byY;
+                field[newY][newX].new = JSON.parse(JSON.stringify(field[y][x]))
+                field[y][x].moved = true
+            }
+        }
+    }
+
+    acceptChanges();
     return true;
+}
+
+/**
+ * Setzt alle sich bewegenden Objekt auf stehend.
+ */
+function setOccupied() {
+    for(let y = 0; y < field.length; y++) {
+        for(let x = 0; x < field[y].length; x++) {
+            if(field[y][x].state == "moving") {
+                field[y][x].state = "occupied";
+            }
+        }
+    }
+}
+
+/**
+ * Rotiert einen Block um sich selbst.
+ * @returns {boolean}
+ */
+function rotate() {
+    const input = $('#form input.rotate');
+    const val = Number(input.val());
+    input.val(val + 1);
+
+    // Prüfen ob das Feld frei ist auf das rotiert werden soll
+    for(let y = 0; y < field.length; y++) {
+        for(let x = 0; x < field[y].length; x++) {
+            if(field[y][x].state == "moving") {
+                const newX = x + field[y][x].rotate.x;
+                const newY = y + field[y][x].rotate.y;
+                if(newX < 0 || newX >= field[0].length || newY < 0 || newY >= field.length || field[newY][newX].state == "occupied") {
+                    return false;
+                }
+            }
+        }
+    }
+
+    // Rotieren
+    for(let y = 0; y < field.length; y++) {
+        for(let x = 0; x < field[y].length; x++) {
+            if(field[y][x].state == "moving") {
+                const newX = x + field[y][x].rotate.x;
+                const newY = y + field[y][x].rotate.y;
+                field[newY][newX].new = JSON.parse(JSON.stringify(field[y][x]));
+                field[newY][newX].new.rotate = {
+                    x : -Number(field[y][x].rotate.y),
+                    y : Number(field[y][x].rotate.x)
+                };
+                field[y][x].moved = true
+            }
+        }
+    }
+
+    acceptChanges();
+    redrawPlayground();
+    return true;
+}
+
+/**
+ * Übernimmt die Änderungen auf das Spielfeld.
+ */
+function acceptChanges() {
+    for(let y = 0; y < field.length; y++) {
+        for(let x = 0; x < field[y].length; x++) {
+            if(field[y][x].hasOwnProperty("new")) {
+                field[y][x] = JSON.parse(JSON.stringify(field[y][x].new));
+                delete field[y][x].new;
+                delete field[y][x].moved;
+            } else if(field[y][x].hasOwnProperty("moved")) {
+                field[y][x] = {
+                    state: "free"
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Zeichnet die Vorschau neu.
+ * @param elementId
+ */
+function redrawPreview(elementId) {
+    $('#next').attr("class", elements[elementId].name);
+}
+
+/**
+ * Steuer das Spiel.
+ */
+function loop() {
+    const finishedRows = checkRows();
+
+    if(finishedRows.length) {
+        // Wenn Reihen gelöst wurden.
+        music.volume = 0.5
+        $('#sounds .clear')[0].play();
+        addPoints(finishedRows);
+        finishRows(finishedRows);
+        setTimeout(() => {
+            music.volume = 1;
+        }, 1000);
+    } else if(isGameover()) {
+        // Prüfen ob das Spiel vorbei ist
+        gameover();
+    } else {
+        // Ansonsten Spiel fortsetzen
+        switch(mode) {
+            case "newElement":
+                newElement(nextElement);
+                redrawPlayground();
+                mode = "down";
+                nextElement = rand(0, elements.length - 1);
+                redrawPreview(nextElement);
+                loop();
+                break;
+            case "down":
+                timeout = setTimeout(function() {
+                    down();
+                    loop();
+                }, speed());
+                break;
+        }
+    }
+}
+
+/**
+ * Speichert per AJAX den Score
+ */
+function saveScore() {
+    const form = $('form');
+    const data = form.serialize();
+    const url = form.attr("action") + "&type=171994";
+    const uidField = form.find('input.uid');
+
+    $.ajax({
+        method: "POST",
+        url: url,
+        data: data
+    }).always(function( msg ) {
+        console.log("Data Saved: ");
+        console.log(msg);
+        uidField.val(msg.uid).prop("disabled", false);
+    });
 }

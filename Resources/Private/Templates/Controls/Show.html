@@ -1,0 +1,52 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+    <div class="clearfix">
+        <f:link.action action="edit" class="float-right btn btn-primary">Steuerung bearbeiten</f:link.action>
+        <h1>Steuerung</h1>
+        <p>
+            Hier siehst du deine aktuell eingestellte Steuerung.
+        </p>
+    </div>
+
+    <f:form action="update" object="Controlls" objectName="controls">
+        <dl class="row keyCodeToKeyName">
+            <dt class="col-sm-2">
+                <f:translate key="tx_bwtetris_domain_model_controlls.down" />
+            </dt>
+            <dd class="col-sm-4 key" data-action="down" data-key="{controls.down}">
+                {controls.down}
+            </dd>
+            <dt class="col-sm-2">
+                <f:translate key="tx_bwtetris_domain_model_controlls.left" />
+            </dt>
+            <dd class="col-sm-4 key" data-action="left" data-key="{controls.left}">
+                {controls.left}
+            </dd>
+            <dt class="col-sm-2">
+                <f:translate key="tx_bwtetris_domain_model_controlls.right" />
+            </dt>
+            <dd class="col-sm-4 key" data-action="right" data-key="{controls.right}">
+                {controls.right}
+            </dd>
+            <dt class="col-sm-2">
+                <f:translate key="tx_bwtetris_domain_model_controlls.drop" />
+            </dt>
+            <dd class="col-sm-4 key" data-action="drop" data-key="{controls.drop}">
+                {controls.drop}
+            </dd>
+            <dt class="col-sm-2">
+                <f:translate key="tx_bwtetris_domain_model_controlls.rotate" />
+            </dt>
+            <dd class="col-sm-4 key" data-action="rotate" data-key="{controls.rotate}">
+                {controls.rotate}
+            </dd>
+            <dt class="col-sm-2">
+                <f:translate key="tx_bwtetris_domain_model_controlls.pause" />
+            </dt>
+            <dd class="col-sm-4 key" data-action="pause" data-key="{controls.pause}">
+                {controls.pause}
+            </dd>
+        </dl>
+    </f:form>
+</f:section>

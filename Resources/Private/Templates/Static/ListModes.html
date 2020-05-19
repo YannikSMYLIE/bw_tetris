@@ -1,0 +1,21 @@
+{namespace bw=BoergenerWebdesign\BwTetris\ViewHelpers}
+<f:layout name="Default" />
+
+<f:section name="main">
+    <h1>Modus waehlen</h1>
+
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <f:render partial="Static/ListModes/Controls" />
+        </div>
+        <div class="col-12 col-md-6">
+            <f:render partial="Static/ListModes/GamesLeft" arguments="{gamesleft : gamesleft, nextgame : nextgame}" />
+        </div>
+    </div>
+
+    <f:for each="{modes}" key="key" as="mode">
+        <div class="pb-2">
+            <f:render partial="Static/ListModes/Modes/{key}" arguments="{_all}" />
+        </div>
+    </f:for>
+</f:section>

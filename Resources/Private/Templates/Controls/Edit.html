@@ -1,0 +1,126 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+    <h1>Steuerung</h1>
+    <p>
+        Hier kannst du die Steuerung anpassen. Klicke dafür einfach auf den "Bearbeiten-Knopf" und dann die gewünscht Taste.<br>
+        Alternativ stehen dir auch vorgefertigte Steuerungen zur Verfügung.
+    </p>
+    <p>
+        <a href="#" class="predefinedControls btn btn-sm btn-primary" data-name="antonia">Antonias Steuerung verwenden</a>
+        <a href="#" class="predefinedControls btn btn-sm btn-primary" data-name="official">Offizielle Steuerung verwenden</a>
+    </p>
+
+    <f:form action="update" object="Controlls" objectName="controls">
+        <dl class="row keyCodeToKeyName">
+            <dt class="col-sm-2">
+                <f:translate key="tx_bwtetris_domain_model_controlls.down" /><br>
+                <a href="#" class="btn btn-sm btn-secondary edit" data-action="down"><i class="fal fa-fw fa-pen"></i></a>
+            </dt>
+            <dd class="col-sm-4">
+                <span class="key" data-action="down" data-key="{oldControls.down}">{oldControls.down}</span>
+                <f:form.hidden property="down" data="{action : 'down'}" value="{oldControls.down}" />
+            </dd>
+            <dt class="col-sm-2">
+                <f:translate key="tx_bwtetris_domain_model_controlls.left" /><br>
+                <a href="#" class="btn btn-sm btn-secondary edit" data-action="left"><i class="fal fa-fw fa-pen"></i></a>
+            </dt>
+            <dd class="col-sm-4">
+                <span class="key" data-action="left" data-key="{oldControls.left}">{oldControls.left}</span>
+                <f:form.hidden property="left" data="{action : 'left'}" value="{oldControls.left}" />
+            </dd>
+            <dt class="col-sm-2">
+                <f:translate key="tx_bwtetris_domain_model_controlls.right" /><br>
+                <a href="#" class="btn btn-sm btn-secondary edit" data-action="right"><i class="fal fa-fw fa-pen"></i></a>
+            </dt>
+            <dd class="col-sm-4">
+                <span class="key" data-action="right" data-key="{oldControls.right}">{oldControls.right}</span>
+                <f:form.hidden property="right" data="{action : 'right'}" value="{oldControls.right}" />
+            </dd>
+            <dt class="col-sm-2">
+                <f:translate key="tx_bwtetris_domain_model_controlls.drop" /><br>
+                <a href="#" class="btn btn-sm btn-secondary edit" data-action="drop"><i class="fal fa-fw fa-pen"></i></a>
+            </dt>
+            <dd class="col-sm-4">
+                <span class="key" data-action="drop" data-key="{oldControls.drop}">{oldControls.drop}</span>
+                <f:form.hidden property="drop" data="{action : 'drop'}" value="{oldControls.drop}" />
+            </dd>
+            <dt class="col-sm-2">
+                <f:translate key="tx_bwtetris_domain_model_controlls.rotate" /><br>
+                <a href="#" class="btn btn-sm btn-secondary edit" data-action="rotate"><i class="fal fa-fw fa-pen"></i></a>
+            </dt>
+            <dd class="col-sm-4">
+                <span class="key" data-action="rotate" data-key="{oldControls.rotate}">{oldControls.rotate}</span>
+                <f:form.hidden property="rotate" data="{action : 'rotate'}" value="{oldControls.rotate}" />
+            </dd>
+            <dt class="col-sm-2">
+                <f:translate key="tx_bwtetris_domain_model_controlls.pause" /><br>
+                <a href="#" class="btn btn-sm btn-secondary edit" data-action="pause"><i class="fal fa-fw fa-pen"></i></a>
+            </dt>
+            <dd class="col-sm-4">
+                <span class="key" data-action="pause" data-key="{oldControls.pause}">{oldControls.pause}</span>
+                <f:form.hidden property="pause" data="{action : 'pause'}" value="{oldControls.pause}" />
+            </dd>
+        </dl>
+        <f:form.button type="submit" class="btn btn-success">Steuerung speichern</f:form.button>
+    </f:form>
+
+    <script>
+        let selectedAction = null;
+        $('.edit').click(function() {
+            if($(this).hasClass("btn-primary")) {
+                $(this).removeClass("btn-primary").addClass("btn-secondary");
+                selectedAction = null;
+            } else {
+                const key = $(this).attr("data-action");
+                selectedAction = key;
+
+                $(this).closest('form').find('.btn-primary').removeClass("btn-primary").addClass("btn-secondary");
+                $(this).removeClass("btn-secondary").addClass("btn-primary");
+            }
+            return false;
+        });
+
+        // Vorgefertigte Steuerungen nutzen
+        $('.predefinedControls').click(function() {
+            const name = $(this).attr("data-name");
+            const controls = predefinedKeyCodes[name];
+            controls.forEach((single) => {
+                const action = single.action;
+                const key = single.key;
+
+                const span = $('form').find('span[data-action="' + action + '"]');
+                const input = $('form').find('input[data-action="' + action + '"]');
+                if(span.length && input.length) {
+                    span.html(keyCodeToLabel(key));
+                    input.val(key);
+                }
+            });
+            return false;
+        });
+
+        // Taste runter bearbeiten
+        $(document).keydown(function( event ) {
+            if(!selectedAction) {
+                return false;
+            }
+
+            const keyCode = event.originalEvent.which;
+            const label = keyCodeToLabel(keyCode);
+
+            // Eintrage von Code
+            $('form').find('input[data-action="' + selectedAction + '"]').val(keyCode);
+            $('form').find('span[data-action="' + selectedAction + '"]').html(label);
+
+            // Anpassen von Anzeige
+            $('form').find('.btn-primary').removeClass("btn-primary").addClass("btn-secondary");
+            selectedAction = null;
+
+
+            console.log(event);
+            console.log(keyCode);
+            console.log(label);
+
+        });
+    </script>
+</f:section>

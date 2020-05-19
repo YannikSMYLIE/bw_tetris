@@ -1,38 +1,241 @@
 <f:layout name="Default" />
 
 <f:section name="main">
-    <h1>Belohnungen</h1>
-    <p>
-        Für's Spielen wirst du belohnt, dafür musst du in bestimmten Modis eine gewisse Anzahl von Punkten erreichen.<br>
-        Damit du dich auch weiterhin auf dein Studium konzentrieren kannst und nicht die ganze Zeit nurnoch Zeit vor dem Computer verbringst, werden die Belohnungen nach und nach freigeschaltet.
-    </p>
+    <h1 class="text-center mb-5">Schatzkammer</h1>
 
-    <f:for each="{rewards}" as="reward">
-        <div class="mb-5">
-            <f:if condition="{reward.autoComplete} || {reward.completed}">
-                <f:then>
-                    <h2>{reward.title}</h2>
-                </f:then>
-                <f:else>
-                    <h2>Noch ein Geheimnis...</h2>
-                </f:else>
-            </f:if>
-            <f:if condition="{reward.completed}">
-                <p class="text-success"><i class="fas fa-fw fa-check"></i> Belohnung freigeschaltet und eingelöst.</p>
-            </f:if>
+    <div style="background: rgba(255,255,255,0.8); padding: 20px; border-radius: 5px; max-width: 60%; margin: 0 auto;" class="text-center mb-3">
+        <p>
+            Du stehst in der Schatzkammer. Vor dir befindet sich eine Tür.<br>
+            Die Tür hat 9 Tasten, welche sich bei jedem Druck verfärben.
+        </p>
+        <p><em>Aber was ist die richtige Kombination?</em></p>
+
+        <f:if condition="{wrong}">
+            <strong class="text-warning">Die Tür bewegt sich nicht, irgendwas stimmt hier nicht.</strong>
+        </f:if>
+    </div>
 
 
-            <div class="card-columns">
-                <f:for each="{reward.hints}" as="hint">
-                    <f:render partial="Hint/Show" arguments="{hint : hint}" />
-                </f:for>
+    <f:form action="check">
+        <div style="width: 50%; padding-bottom: 50%; background: #000; margin: 0 auto; position: relative;">
+            <div class="tableContainer">
+
+                <table class="buttonTable">
+                    <tr>
+                        <td>
+                            <f:render partial="Rewards/Aztek/Button" arguments="{x : 0, y : 0, value : result.0.0}" />
+                        </td>
+                        <td>
+                            <f:render partial="Rewards/Aztek/Button" arguments="{x : 1, y : 0, value : result.1.0}" />
+                        </td>
+                        <td>
+                            <f:render partial="Rewards/Aztek/Button" arguments="{x : 2, y : 0, value : result.2.0}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <f:render partial="Rewards/Aztek/Button" arguments="{x : 0, y : 1, value : result.0.1}" />
+                        </td>
+                        <td>
+                            <f:render partial="Rewards/Aztek/Button" arguments="{x : 1, y : 1, value : result.1.1}" />
+                        </td>
+                        <td>
+                            <f:render partial="Rewards/Aztek/Button" arguments="{x : 2, y : 1, value : result.2.1}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <f:render partial="Rewards/Aztek/Button" arguments="{x : 0, y : 2, value : result.0.2}" />
+                        </td>
+                        <td>
+                            <f:render partial="Rewards/Aztek/Button" arguments="{x : 1, y : 2, value : result.1.2}" />
+                        </td>
+                        <td>
+                            <f:render partial="Rewards/Aztek/Button" arguments="{x : 2, y : 2, value : result.2.2}" />
+                        </td>
+                    </tr>
+                </table>
+                <div id="open">
+                    <div class="flex">
+                        <f:form.button type="submit">
+                            <div class="key text-center">
+                                <i class="fal fa-key-skeleton"></i><br>
+                                Schatzkammer öffnen
+                            </div>
+                        </f:form.button>
+                    </div>
+                </div>
             </div>
         </div>
-    </f:for>
+
+        <noscript>
+            <div class="text-center">
+                <f:form.button type="submit" class="btn btn-lg btn-primary mt-3"><i class="fal fa-key-skeleton"></i> Schatzkammer öffnen</f:form.button>
+            </div>"text-center">
+                <f:form.button type="submit" class="btn btn-lg btn-primary mt-3"><i class="fal fa-key-skeleton"></i> Schatzkammer öffnen</f:form.button>
+            </div>
+        </noscript>
+    </f:form>
+
+    <div class="sounds">
+        <audio>
+            <source src="typo3conf/ext/bw_tetris/Resources/Public/Sounds/Reward/button1.mp3" type="audio/mpeg">
+        </audio>
+        <audio>
+            <source src="typo3conf/ext/bw_tetris/Resources/Public/Sounds/Reward/button2.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+    <div class="music">
+        <audio autoplay loop volume="0.5">
+            <source src="typo3conf/ext/bw_tetris/Resources/Public/Music/bg_sound.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+
 
     <style>
-        .unlocked {
-            cursor: pointer;
+        #open {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+        #open .flex {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+        }
+        #open button {
+            background: transparent;
+            border: 0;
+        }
+        #open .key {
+            border-radius: 10px;
+            background: rgba(255,255,255,0.5);
+            padding: 20px;
+        }
+        #open .key svg {
+            font-size: 5em;
+            margin-bottom: 10px;
+        }
+        .tableContainer {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+        .buttonTable {
+            height: 100%;
+            width: 100%;
+        }
+        .buttonTable td {
+            width: 33%;
+            height: 33%;
+        }
+        .buttonTable td .button {
+            height: 100%;
+            background-image: url('/typo3conf/ext/bw_tetris_tmp/Resources/Skins/Aztec/Public/Images/Game/wall.jpg');
+        }
+        .buttonTable td .button button {
+            height: 100%;
+            width: 100%;
+            border-width: 10px;
+            opacity: 0.5;
+        }
+        .buttonTable td .button input {
+            position: absolute;
+        }
+        .buttonTable td .button button.red  {
+            background-color: red;
+        }
+        .buttonTable td .button button.green {
+            background-color: green;
+        }
+        .buttonTable td .button button.blue {
+            background-color: blue;
+        }
+        .buttonTable td .button button.orange {
+            background-color: orange;
+        }
+        .buttonTable td .button button.yellow {
+            background-color: yellow;
+        }
+        .buttonTable td .button button.purple {
+            background-color: purple;
         }
     </style>
+
+    <script>
+        // Hintergrundsound
+        $(document).ready(function() {
+            const bgsound = $('.music audio');
+            bgsound[0].volume = 0.5;
+        })
+
+        $('.buttonTable .button button').click(function() {
+            playsound();
+
+            const input = $(this).closest('.button').find('input');
+            const button = $(this).closest('.button').find('button');
+
+            const currentSelection = Number(input.val());
+            const nextSelection = (currentSelection + 1) % 6;
+
+            button.attr("class", colors[nextSelection]);
+            input.val(nextSelection);
+            checkCorrectness();
+            return false;
+        });
+
+        const colors = [
+            'red', 'green', 'blue', 'orange', 'yellow', 'purple'
+        ];
+
+        /**
+         * Spielt einen Sound ab.
+         */
+        function playsound() {
+            const soundfiles = $('.sounds').find('audio').length;
+            const soundfileIndex = rand(0, soundfiles-1);
+            const sound = $('.sounds').find('audio').eq(soundfileIndex);
+
+            sound[0].pause();
+            sound[0].currentTime = 0
+            sound[0].play();
+        }
+
+        /**
+         * Prüft ob die Eingabe korrekt ist.
+         * @returns {boolean}
+         */
+        function checkCorrectness() {
+            const correct = [
+                [0,1,2],
+                [2,3,4],
+                [1,5,0],
+            ];
+            const buttons = $('.buttonTable .button');
+            let error = false;
+            buttons.each(function() {
+                const x = $(this).attr("data-x");
+                const y = $(this).attr("data-y");
+                const val = $(this).find('input').val();
+                if(correct[x][y] != val) {
+                    error = true;
+                    return false;
+                }
+            });
+
+            if(error) {
+                return false;
+            }
+            $('#open').fadeIn();
+        }
+    </script>
 </f:section>

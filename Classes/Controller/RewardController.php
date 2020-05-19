@@ -1,39 +1,49 @@
 <?php
 namespace BoergenerWebdesign\BwTetris\Controller;
 
-/***
- *
- * This file is part of the "Tetris" Extension for TYPO3 CMS.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- *  (c) 2018 Yannik Börgener &lt;kontakt@boergener.de&gt;, boergener webdesign
- *
- ***/
-
-/**
- * RewardController
- */
-class RewardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
-{
+class RewardController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
     /**
-     * rewardRepository
-     *
-     * @var \BoergenerWebdesign\BwTetris\Domain\Repository\RewardRepository
-     * @inject
+     * Zeigt die Tafel
+     * @param array $result
      */
-    protected $rewardRepository = NULL;
-
+    public function listAction(array $result = null) : void {
+        if(!$result) {
+            $this -> view -> assign('wrong', false);
+            $result = [
+                [0,0,0],
+                [0,0,0],
+                [0,0,0],
+            ];
+        } else {
+            $this -> view -> assign('wrong', true);
+        }
+        $this -> view -> assign('result', $result);
+    }
 
     /**
-     * action list
-     *
-     * @return void
+     * Überprüft die Eingabe
+     * @param array $result
      */
-    public function listAction()
-    {
-        $rewards = $this->rewardRepository->findAll();
-        $this->view->assign('rewards', $rewards);
+    public function checkAction(array $result) : void {
+        // Korrektheit prüfen
+        $korrekt = [
+            [0,1,2],
+            [2,3,4],
+            [1,5,0],
+        ];
+        foreach($result as $keyX => $row) {
+            foreach($row as $keyY => $value) {
+                if($korrekt[$keyX][$keyY] != $result[$keyX][$keyY]) {
+                    $this -> redirect('list', null, null, ['result' => $result]);
+                }
+            }
+        }
+
+        // Auf den Schatz verlinken
+        $uriBuilder = $this->uriBuilder;
+        $uri = $uriBuilder
+            ->setTargetPageUid($this -> settings["rewardPage"])
+            ->build();
+        $this->redirectToUri($uri);
     }
 }

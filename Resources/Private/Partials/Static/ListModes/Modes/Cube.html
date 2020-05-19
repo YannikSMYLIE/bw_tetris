@@ -1,0 +1,18 @@
+
+<div class="card">
+    <f:image class="card-img-top" src="EXT:bw_tetris/Resources/Public/Images/Modes/carousel.jpg" alt="{bw:mode(name : 'carousel')}" style="height: auto;" />
+    <div class="card-body">
+        <h5 class="card-title">{bw:mode(name : 'carousel')}</h5>
+        <p class="card-text">Noch eine R-R-R-R-R-Runde! Die nächste Fahrt rückwärts, alle EINSTEIGEN, ALLE EINSTEIGEN, jetzt gehts louououououos!</p>
+        <p class="card-text">
+            <f:if condition="{carousel}">
+                <f:then>
+                    <f:link.action action="carousel" class="btn btn-primary">Jetzt spielen!</f:link.action></f:then>
+                <f:else>
+                    <a href="#" class="btn btn-primary disabled">Jetzt spielen!</a><br>
+                    <small class="text-danger">Noch nicht freigeschaltet!</small>
+                </f:else>
+            </f:if>
+        </p>
+    </div>
+</div>

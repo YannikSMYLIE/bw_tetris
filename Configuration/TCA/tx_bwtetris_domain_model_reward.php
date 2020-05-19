@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title'	=> 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_reward',
+        'title'	=> 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_reward',
         'label' => 'title',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -110,7 +110,7 @@ return [
         ],
         'title' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_reward.title',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_reward.title',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -119,7 +119,7 @@ return [
         ],
         'hints' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_reward.hints',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_reward.hints',
             'config' => [
                 'type' => 'inline',
                 'foreign_table' => 'tx_bwtetris_domain_model_hint',
@@ -132,7 +132,7 @@ return [
         ],
         'auto_complete' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_reward.auto_complete',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_reward.auto_complete',
             'config' => [
                 'type' => 'check',
                 'items' => [
@@ -142,7 +142,7 @@ return [
         ],
         'completed' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_reward.completed',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_reward.completed',
             'config' => [
                 'type' => 'check',
                 'items' => [

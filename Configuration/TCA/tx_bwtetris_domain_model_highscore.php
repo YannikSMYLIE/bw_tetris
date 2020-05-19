@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title'	=> 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore',
+        'title'	=> 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore',
         'label' => 'points',
         'label_alt' => 'mode',
         'label_alt_force' => 1,
@@ -22,11 +22,11 @@ return [
         'iconfile' => 'EXT:bw_tetris/Resources/Public/Icons/tx_bwtetris_domain_model_highscore.gif'
     ],
     'interface' => [
-		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, mode, points, date, name',
+		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, mode, points, date, name, fe_user',
     ],
     'types' => [
 		'1' => ['showitem' => '
-		     hidden, name, date, mode, points,
+		     hidden, name, fe_user, date, mode, points,
 		     --div--;Statistik, stone_l, stone_j, stone_i, stone_o, stone_s, stone_z, stone_t, key_left, key_right, rotate, begin_of_game, end_of_game,
 		     --div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.access, sys_language_uid, l10n_parent, l10n_diffsource, starttime, endtime'],
     ],
@@ -114,7 +114,7 @@ return [
         ],
         'mode' => [
 	        'exclude' => true,
-	        'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.mode',
+	        'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.mode',
 	        'config' => [
 			    'type' => 'input',
 			    'size' => 30,
@@ -123,7 +123,7 @@ return [
 	    ],
 	    'points' => [
 	        'exclude' => true,
-	        'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.points',
+	        'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.points',
 	        'config' => [
 			    'type' => 'input',
 			    'size' => 30,
@@ -132,27 +132,38 @@ return [
 	    ],
         'date' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.date',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.date',
             'config' => [
-                'dbType' => 'date',
+                'dbType' => 'datetime',
                 'type' => 'input',
                 'size' => 7,
-                'eval' => 'date',
-                'default' => '0000-00-00'
+                'eval' => 'datetime',
+                'default' => '0000-00-00 00:00'
             ],
         ],
         'name' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.name',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.name',
             'config' => [
                 'type' => 'input',
                 'eval' => 'trim'
             ],
         ],
+        'fe_user' => [
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.fe_user',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['', 0],
+                ],
+                'foreign_table' => 'fe_users',
+            ],
+        ],
         // Statistik
         'stone_l' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.stone_l',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.stone_l',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -161,7 +172,7 @@ return [
         ],
         'stone_j' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.stone_j',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.stone_j',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -170,7 +181,7 @@ return [
         ],
         'stone_i' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.stone_i',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.stone_i',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -179,7 +190,7 @@ return [
         ],
         'stone_o' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.stone_o',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.stone_o',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -188,7 +199,7 @@ return [
         ],
         'stone_s' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.stone_s',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.stone_s',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -197,7 +208,7 @@ return [
         ],
         'stone_z' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.stone_z',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.stone_z',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -206,7 +217,7 @@ return [
         ],
         'stone_t' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.stone_t',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.stone_t',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -215,7 +226,7 @@ return [
         ],
         'key_left' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.key_left',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.key_left',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -224,7 +235,7 @@ return [
         ],
         'key_right' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.key_right',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.key_right',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -233,7 +244,7 @@ return [
         ],
         'rotate' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.rotate',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.rotate',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -242,7 +253,7 @@ return [
         ],
         'begin_of_game' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.begin_of_game',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.begin_of_game',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -251,7 +262,7 @@ return [
         ],
         'end_of_game' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_highscore.end_of_game',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_highscore.end_of_game',
             'config' => [
                 'type' => 'input',
                 'size' => 30,

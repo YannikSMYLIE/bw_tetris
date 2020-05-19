@@ -1,7 +1,7 @@
 <?php
 return [
     'ctrl' => [
-        'title'	=> 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_hint',
+        'title'	=> 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_hint',
         'label' => 'points',
         'tstamp' => 'tstamp',
         'crdate' => 'crdate',
@@ -109,7 +109,7 @@ return [
         ],
         'points' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_hint.points',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_hint.points',
             'config' => [
                 'type' => 'input',
                 'size' => 4,
@@ -118,7 +118,7 @@ return [
         ],
         'mode' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_hint.mode',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_hint.mode',
             'config' => [
                 'type' => 'input',
                 'size' => 30,
@@ -127,7 +127,7 @@ return [
         ],
         'start' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_hint.start',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_hint.start',
             'config' => [
                 'dbType' => 'date',
                 'type' => 'input',
@@ -138,7 +138,7 @@ return [
         ],
         'text' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_hint.text',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_hint.text',
             'config' => [
                 'type' => 'text',
                 'eval' => 'trim'
@@ -146,7 +146,7 @@ return [
         ],
         'images' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_hint.images',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_hint.images',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
                 'images',
                 [
@@ -192,7 +192,7 @@ return [
         ],
         'files' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_hint.files',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_hint.files',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
                 'files',
                 [
@@ -237,7 +237,7 @@ return [
         ],
         'video' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_hint.video',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_hint.video',
             'config' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getFileFieldTCAConfig(
                 'video',
                 [
@@ -281,7 +281,7 @@ return [
             ),
         ],
         'reward' => [
-            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang_db.xlf:tx_bwtetris_domain_model_hint.reward',
+            'label' => 'LLL:EXT:bw_tetris/Resources/Private/Language/locallang.xlf:tx_bwtetris_domain_model_hint.reward',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',

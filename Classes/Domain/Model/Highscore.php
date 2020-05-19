@@ -1,22 +1,28 @@
 <?php
 namespace BoergenerWebdesign\BwTetris\Domain\Model;
 
-/***
- *
- * This file is part of the "Tetris" Extension for TYPO3 CMS.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- *  (c) 2018 Yannik Börgener &lt;kontakt@boergener.de&gt;, boergener webdesign
- *
- ***/
-
-/**
- * Highscore
- */
 class Highscore extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
+    /**
+     * @var int
+     */
+    protected $uid;
+    /**
+     * @param int $uid
+     */
+    public function setUid(int $uid): void
+    {
+        $this->uid = $uid;
+    }
+    /**
+     * @return int
+     */
+    public function getUid(): int
+    {
+        return $this->uid;
+    }
+
+
     /**
      * mode
      *
@@ -312,4 +318,23 @@ class Highscore extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function setEndOfGame($endOfGame) {
         $this -> endOfGame = $endOfGame;
     }
+
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
+     */
+    protected $feUser = null;
+    /**
+     * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser
+     */
+    public function setFeUser(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser) : void {
+        $this->feUser = $feUser;
+    }
+    /**
+     * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
+     */
+    public function getFeUser() {
+        return $this->feUser;
+    }
+
 }

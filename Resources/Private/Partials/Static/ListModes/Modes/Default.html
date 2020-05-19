@@ -1,0 +1,37 @@
+<div class="card">
+    <div class="row">
+        <div class="col-3">
+            <f:render partial="Static/ListModes/Thumbnail" arguments="{src: 'EXT:bw_tetris/Resources/Public/Images/Modes/default.png', modeKey : 'default'}" />
+        </div>
+        <div class="col-9">
+            <div class="card-body pl-0">
+                <h5 class="card-title">{bw:mode(name : 'default')}</h5>
+                <p class="card-text">Ganz normales Tetris. Simple as that!</p>
+                <table class="table table-striped table-sm">
+                    <tr>
+                        <th>Punktevergabe:</th>
+                        <td>nach Regelwerk</td>
+                    </tr>
+                    <tr>
+                        <th>Geschwindigkeit:</th>
+                        <td>stetig wachsend</td>
+                    </tr>
+                    <tr>
+                        <th>Besonderheiten:</th>
+                        <td>keine</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-right">
+        <f:if condition="{gamesleft}">
+            <f:then>
+                <f:link.action action="default" class="btn btn-primary btn-sm">Jetzt spielen!</f:link.action>
+            </f:then>
+            <f:else>
+                <f:link.action action="default" class="btn btn-primary btn-sm disabled" title="Maximale Anzahl an Spielen gespielt">Jetzt spielen!</f:link.action>
+            </f:else>
+        </f:if>
+    </div>
+</div>

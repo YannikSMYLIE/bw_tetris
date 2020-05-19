@@ -1,91 +1,96 @@
 <?php
 namespace BoergenerWebdesign\BwTetris\Controller;
 
-/***
- *
- * This file is part of the "Tetris" Extension for TYPO3 CMS.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- *  (c) 2018 Yannik Börgener &lt;kontakt@boergener.de&gt;, boergener webdesign
- *
- ***/
-
-/**
- * RewardController
- */
-class HighscoreController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
-{
+class HighscoreController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
     /**
-     * highscoreRepository
-     *
      * @var \BoergenerWebdesign\BwTetris\Domain\Repository\HighscoreRepository
      * @inject
      */
     protected $highscoreRepository = NULL;
+    /**
+     * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
+     * @inject
+     */
+    protected $feUserRepository = NULL;
+
+    /**
+     * Initialisiert den Controller
+     */
+    public function initializeAction() : void {
+        $querySettings = $this -> objectManager -> get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
+        $querySettings -> setRespectStoragePage(FALSE);
+        $this -> feUserRepository -> setDefaultQuerySettings($querySettings);
+    }
 
 
     /**
-     * action list
-     *
      * @param string $mode
+     * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser
      * @param boolean $backlink
      * @return void
      */
-    public function listAction($mode = "default", $backlink = false)
-    {
-        $show = 15;
-        $scores = [];
-
-        //  Echte Highscores einlesen
-        $realScores = [];
-        $highscore = $this->highscoreRepository->findByMode($mode);
-        for($read = 0; $highscore -> current() && $read < $show; $read++) {
-            if(!array_key_exists($highscore -> current() -> getPoints(), $realScores)) {
-                $realScores[$highscore -> current() -> getPoints()] = [];
-            }
-            $realScores[$highscore -> current() -> getPoints()][] = $highscore -> current();
-            $highscore -> next();
-        }
-        uksort ( $realScores , function($a, $b) {
-            return (int)$a < (int)$b;
-        });
-
-        $scores = [];
-        foreach($realScores as $pointLevel) {
-            array_values($pointLevel);
-            $scores = array_merge($scores, $pointLevel);
-        }
-
-        // Platzhalter einfügen
-        for($i = $show; count($scores) < $show; $i--) {
-            $score = new \BoergenerWebdesign\BwTetris\Domain\Model\Highscore();
-            $score -> setPoints(($i+1) * 10);
-            switch(rand(0, 2)) {
-                case 0: $score -> setName("C-3PO"); break;
-                case 1: $score -> setName("BB-8"); break;
-                case 2: $score -> setName("R2-D2"); break;
-            }
-            $score -> setDate(new \DateTime());
-            $scores[$score -> getPoints()] = $score;
-        }
+    public function listAction($mode = "Default", \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $feUser = null, $backlink = false) : void {
+        $highscores = $this->highscoreRepository->findHighscores($mode, $feUser, 15);
 
         $this->view->assignMultiple([
-            'scores' => array_slice($scores, 0, 15),
-            'mode' => $mode,
-            'startAt' => $show - count($scores),
+            'scores' => $highscores,
+            'currentMode' => $mode,
+            'currentModeLc' => strtolower($mode),
+            'feuser' => $GLOBALS['TSFE']->fe_user->user["uid"] ?? 0,
+            'feusers' => $this -> getFeUsers(),
+            'selectedUser' => $feUser,
+            'modes' => $GLOBALS['TYPO3_CONF_VARS']["EXTENSIONS"]["bw_tetris"]["modes"],
+            'gamesleft' => $this -> highscoreRepository -> gamesLeft($GLOBALS['TSFE']->fe_user->user["uid"] ?? 0),
             'backlink' => $backlink
         ]);
     }
 
+    public function initializeSaveAction() : void {
+        if(!$this -> request -> getArgument("highscore")["uid"]) {
+            $propertyMappingConfiguration = $this->arguments['highscore']->getPropertyMappingConfiguration();
+            $propertyMappingConfiguration -> skipProperties("uid");
+        }
+    }
+
     /**
-     * @param \BoergenerWebdesign\BwTetris\Domain\Model\Highscore $newHighscore
+     * Speichert einen Spielstand.
+     * @param \BoergenerWebdesign\BwTetris\Domain\Model\Highscore $highscore
+     * @throws \Exception
      */
-    public function createAction(\BoergenerWebdesign\BwTetris\Domain\Model\Highscore $newHighscore) {
-        $newHighscore -> setDate(new \DateTime);
-        $newHighscore -> setEndOfGame(time());
-        $this -> highscoreRepository -> add($newHighscore);
-        $this -> redirect('list', null, null, ['mode' => $newHighscore -> getMode(), 'backlink' => true]);
+    public function saveAction(\BoergenerWebdesign\BwTetris\Domain\Model\Highscore $highscore) : void {
+        if(isset($GLOBALS['TSFE']->fe_user->user) && $GLOBALS['TSFE']->fe_user->user['uid']) {
+            $feUser = $this -> feUserRepository -> findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
+            $highscore -> setFeUser($feUser);
+        }
+        $highscore -> setDate(new \DateTime());
+        $highscore -> setEndOfGame(time());
+        $this -> highscoreRepository -> save($highscore);
+
+        if($_GET["type"] == 171994) {
+            // Persistieren
+            $persistenceManager = $this->objectManager->get("TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager");
+            $persistenceManager->persistAll();
+            // Rückgabe
+            header('Content-Type: application/json');
+            echo json_encode([
+                "uid" => $highscore -> getUid()
+            ]);
+            die();
+        } else {
+            $this -> redirect('list', null, null, ['mode' => $highscore -> getMode(), 'backlink' => true]);
+        }
+    }
+
+    /**
+     * Sortiert alle Spieler alphabetisch.
+     * @return array
+     */
+    private function getFeUsers() : array {
+        $feusers = [];
+        foreach($this -> feUserRepository -> findAll() as $feuser) {
+            $feusers[$feuser -> getUsername()] = $feuser;
+        }
+        ksort($feusers);
+        return array_values($feusers);
     }
 }

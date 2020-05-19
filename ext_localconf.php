@@ -1,6 +1,13 @@
 <?php
 defined('TYPO3_MODE') || die('Access denied.');
 
+$GLOBALS['TYPO3_CONF_VARS']["EXTENSIONS"]["bw_tetris"]["modes"] = [
+    'Default' => 'Original',
+    'Carousel' => 'Karussell',
+    //'Cube' => 'Würfel',
+    'Old' => 'Altersheim'
+];
+
 call_user_func(
     function($extKey)
 	{
@@ -9,11 +16,11 @@ call_user_func(
             'BoergenerWebdesign.BwTetris',
             'Game',
             [
-                'Static' => 'selectMode, default, carousel, cube, old'
+                'Static' => 'listModes, default, carousel, cube, old'
             ],
             // non-cacheable actions
             [
-                'Static' => 'selectMode, default, carousel, cube, old'
+                'Static' => 'default, carousel, cube, old'
             ]
         );
 
@@ -21,11 +28,11 @@ call_user_func(
             'BoergenerWebdesign.BwTetris',
             'Highscore',
             [
-                'Highscore' => 'list,create'
+                'Highscore' => 'list,save'
             ],
             // non-cacheable actions
             [
-                'Highscore' => 'list,create'
+                'Highscore' => 'list,save'
             ]
         );
 
@@ -33,23 +40,23 @@ call_user_func(
             'BoergenerWebdesign.BwTetris',
             'Rewards',
             [
-                'Reward' => 'list'
+                'Reward' => 'list,check'
             ],
             // non-cacheable actions
             [
-                'Reward' => 'list'
+                'Reward' => 'list,check'
             ]
         );
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
             'BoergenerWebdesign.BwTetris',
-            'SelectUser',
+            'Controls',
             [
-                'Static' => 'select, set'
+                'Controls' => 'show,edit,update'
             ],
             // non-cacheable actions
             [
-                'Static' => 'select, set'
+                'Controls' => 'show,edit,update'
             ]
         );
     },

@@ -1,0 +1,36 @@
+<div id="form">
+    <f:form pageUid="{settings.highscorePage}" controller="Highscore" action="save" pluginName="highscore" object="Highscore" objectName="highscore" class="d-noned">
+        <hr>
+        <label>Uid:</label>
+        <f:form.textfield property="uid" class="uid form-control" readonly="true" />
+        <label>Points:</label>
+        <f:form.textfield property="points" class="points form-control" required="true" readonly="true" />
+        <label>Mode:</label>
+        <f:form.textfield property="mode" class="mode form-control" required="true" readonly="true" value="{mode}" />
+        <strong>Steine:</strong><br>
+        <label>L:</label>
+        <f:form.textfield property="stoneL" class="stoneL form-control" required="true" readonly="true" value="0" />
+        <label>J:</label>
+        <f:form.textfield property="stoneJ" class="stoneJ form-control" required="true" readonly="true" value="0" />
+        <label>I:</label>
+        <f:form.textfield property="stoneI" class="stoneI form-control" required="true" readonly="true" value="0" />
+        <label>O:</label>
+        <f:form.textfield property="stoneO" class="stoneO form-control" required="true" readonly="true" value="0" />
+        <label>S:</label>
+        <f:form.textfield property="stoneS" class="stoneS form-control" required="true" readonly="true" value="0" />
+        <label>Z:</label>
+        <f:form.textfield property="stoneZ" class="stoneZ form-control" required="true" readonly="true" value="0" />
+        <label>T:</label>
+        <f:form.textfield property="stoneT" class="stoneT form-control" required="true" readonly="true" value="0" />
+        <strong>Bewegungen:</strong><br>
+        <label>Links:</label>
+        <f:form.textfield property="keyLeft" class="keyLeft form-control" required="true" readonly="true" value="0" />
+        <label>Rechts:</label>
+        <f:form.textfield property="keyRight" class="keyRight form-control" required="true" readonly="true" value="0" />
+        <label>Rotieren:</label>
+        <f:form.textfield property="rotate" class="rotate form-control" required="true" readonly="true" value="0" />
+        <strong>Spielzeit:</strong><br>
+        <label>Start Time:</label>
+        <f:form.textfield property="beginOfGame" class="form-control" required="true" readonly="true" value="{beginOfGame}" />
+    </f:form>
+</div>

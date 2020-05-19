@@ -1,0 +1,12 @@
+<f:if condition="{currentMode} == {mode}">
+    <f:then>
+        <f:link.action action="list" arguments="{mode : mode}" class="btn btn-sm btn-primary px-5">
+            <bw:mode name="{mode}" />
+        </f:link.action>
+    </f:then>
+    <f:else>
+        <f:link.action action="list" arguments="{mode : mode}" class="btn btn-sm btn-secondary px-5">
+            <bw:mode name="{mode}" />
+        </f:link.action>
+    </f:else>
+</f:if>

@@ -1,0 +1,11 @@
+<strong style="font-family: Tetris !important;">Spieler waehlen</strong>
+<div>
+    <f:form action="list">
+        <f:form.hidden name="mode" value="{currentMode}" />
+        <f:form.select name="feUser" value="{selectedUser.uid}" class="form-control" prependOptionLabel="Alle anzeigen" prependOptionValue="0">
+            <f:for each="{feusers}" as="feuser">
+                <f:form.select.option value="{feuser.uid}">{feuser.username}</f:form.select.option>
+            </f:for>
+        </f:form.select>
+    </f:form>
+</div>

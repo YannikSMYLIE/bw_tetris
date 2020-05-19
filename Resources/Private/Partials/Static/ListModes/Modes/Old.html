@@ -1,0 +1,37 @@
+<div class="card">
+    <div class="row">
+        <div class="col-3">
+            <f:render partial="Static/ListModes/Thumbnail" arguments="{src: 'EXT:bw_tetris/Resources/Public/Images/Modes/old.jpg', modeKey : 'old'}" />
+        </div>
+        <div class="col-9">
+            <div class="card-body pl-0">
+                <h5 class="card-title">{bw:mode(name : 'old')}</h5>
+                <p class="card-text">Macht mal langsam Jungs! Der Modus für alle, die es etwas ruhiger angehen lassen wollen.</p>
+                <table class="table table-striped table-sm">
+                    <tr>
+                        <th>Punktevergabe:</th>
+                        <td>nach Regelwerk</td>
+                    </tr>
+                    <tr>
+                        <th>Geschwindigkeit:</th>
+                        <td>durchgehend gleich "schnell"</td>
+                    </tr>
+                    <tr>
+                        <th>Besonderheiten:</th>
+                        <td>keine</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer text-right">
+        <f:if condition="{gamesleft}">
+            <f:then>
+                <f:link.action action="old" class="btn btn-primary btn-sm">Jetzt spielen!</f:link.action>
+            </f:then>
+            <f:else>
+                <f:link.action action="old" class="btn btn-primary btn-sm disabled" title="Maximale Anzahl an Spielen gespielt">Jetzt spielen!</f:link.action>
+            </f:else>
+        </f:if>
+    </div>
+</div>

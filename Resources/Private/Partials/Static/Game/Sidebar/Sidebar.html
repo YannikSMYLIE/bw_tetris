@@ -1,0 +1,36 @@
+<a href="#" id="start" class="btn btn-primary btn-block">Spielstart</a>
+<a href="#" id="pause" style="display: none;" class="btn btn-secondary btn-block"><strong>P</strong>ausieren</a>
+
+<div class="card my-3">
+    <div class="card-body text-center">
+        <select class="form-control" id="startLevel">
+            <option value="0">Level 0</option>
+            <option value="1">Level 1</option>
+            <option value="3">Level 3</option>
+            <option value="5">Level 5</option>
+            <option value="7">Level 7</option>
+            <option value="9">Level 9</option>
+            <option value="11">Level 11</option>
+            <option value="13">Level 13</option>
+            <option value="15">Level 15</option>
+            <option value="17">Level 17</option>
+            <option value="19">Level 19</option>
+            <option value="21">Level 21</option>
+            <option value="23">Level 23</option>
+            <option value="25">Level 25</option>
+            <option value="27">Level 27</option>
+            <option value="29">Level 29</option>
+        </select>
+
+        <div id="levelContainer" class="d-none">
+            <h5 class="card-title">Level <span id="level">0</span></h5>
+            <p class="card-text"><span id="cleared">0</span> / <span id="toClear">10</span></p>
+        </div>
+    </div>
+</div>
+
+<f:render partial="Static/Game/Sidebar/Score" />
+
+<f:render partial="Static/Game/Sidebar/Preview" />
+
+<f:render partial="Static/Game/Sidebar/FieldList" arguments="{beginOfGame : beginOfGame, mode : mode}" />

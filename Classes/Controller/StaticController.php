@@ -1,120 +1,102 @@
 <?php
 namespace BoergenerWebdesign\BwTetris\Controller;
 
-/***
- *
- * This file is part of the "Tetris" Extension for TYPO3 CMS.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- *  (c) 2018 Yannik Börgener &lt;kontakt@boergener.de&gt;, boergener webdesign
- *
- ***/
-
-/**
- * RewardController
- */
 class StaticController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
     /**
-     * highscoreRepository
-     *
      * @var \BoergenerWebdesign\BwTetris\Domain\Repository\HighscoreRepository
      * @inject
      */
-    protected $highscoreRepository = NULL;
+    protected $highscoreRepository = null;
+    /**
+     * @var \BoergenerWebdesign\BwTetris\Domain\Repository\ControllsRepository
+     * @inject
+     */
+    protected $controllsRepository = NULL;
+    /**
+     * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
+     * @inject
+     */
+    protected $feUserRepository = NULL;
 
-
-    public function selectModeAction() {
-        $this -> checkUser();
-
-        $notAntonia = isset($_COOKIE["name"]) && $_COOKIE["name"] != "Antonia";
-
-        $carouselHighscore = $this -> highscoreRepository -> findOneByScoreModeAndName(3000, "default", "Antonia");
-        $cubeHighscore = $this -> highscoreRepository -> findOneByScoreModeAndName(3500, "cube", "Antonia");
-        $oldHighscore = $this -> highscoreRepository -> findOneByScoreModeAndName(1500, "old", "Antonia");
-
-        $carouselTime = \DateTime::createFromFormat("d.m.Y H:i:s", "12.08.2018 00:00:00");
-        $cubeTime = \DateTime::createFromFormat("d.m.Y H:i:s", "12.08.2018 00:00:00");
-        $oldTime = \DateTime::createFromFormat("d.m.Y H:i:s", "12.08.2018 00:00:00");
-        $nowTime = new \DateTime();
-
+    /**
+     * Auswahl welcher Modus gespielt werden soll.
+     */
+    public function listModesAction() {
         $this -> view -> assignMultiple([
-            'carousel' => true,
-            'cube' => false,
-            'old' => true,
-            //'carousel' => $carouselHighscore != null && $nowTime >= $carouselTime || $notAntonia,
-            //'cube' => $cubeHighscore != null && $nowTime >= $cubeTime || $notAntonia,
-            //'old' => $oldHighscore != null && $nowTime >= $oldTime || $notAntonia,
+            'modes' => $GLOBALS['TYPO3_CONF_VARS']["EXTENSIONS"]["bw_tetris"]["modes"],
+            'gamesleft' => $this -> highscoreRepository -> gamesLeft($GLOBALS['TSFE']->fe_user->user["uid"] ?? 0),
+            'nextgame' => $this -> highscoreRepository -> nextGame($GLOBALS['TSFE']->fe_user->user["uid"] ?? 0)
         ]);
-
     }
 
+    /**
+     * Normaler Modus
+     */
     public function defaultAction() {
-        $this -> checkUser();
+        if(!$this -> highscoreRepository -> gamesLeft($GLOBALS['TSFE']->fe_user->user["uid"] ?? 0)) {
+            $this -> redirect('listModes');
+        }
+
         $this -> view -> assignMultiple([
-            'name' => $_COOKIE["name"],
-            'beginOfGame' => time()
+            'beginOfGame' => time(),
+            'controls' => $this -> getControls()
         ]);
     }
 
+    /**
+     * Carousel Modus
+     */
     public function carouselAction() {
-        $this -> checkUser();
+        if(!$this -> highscoreRepository -> gamesLeft($GLOBALS['TSFE']->fe_user->user["uid"] ?? 0)) {
+            $this -> redirect('listModes');
+        }
+
         $this -> view -> assignMultiple([
-            'name' => $_COOKIE["name"],
-            'beginOfGame' => time()
+            'beginOfGame' => time(),
+            'controls' => $this -> getControls()
         ]);
     }
 
+    /**
+     * Würfelmodus
+     */
     public function cubeAction() {
-        $this -> checkUser();
+        if(!$this -> highscoreRepository -> gamesLeft($GLOBALS['TSFE']->fe_user->user["uid"] ?? 0)) {
+            $this -> redirect('listModes');
+        }
+
         $this -> view -> assignMultiple([
-            'name' => $_COOKIE["name"],
-            'beginOfGame' => time()
+            'beginOfGame' => time(),
+            'controls' => $this -> getControls()
         ]);
     }
 
+    /**
+     * Altersheim Modus
+     */
     public function oldAction() {
-        $this -> checkUser();
+        if(!$this -> highscoreRepository -> gamesLeft($GLOBALS['TSFE']->fe_user->user["uid"] ?? 0)) {
+            $this -> redirect('listModes');
+        }
+
         $this -> view -> assignMultiple([
-            'name' => $_COOKIE["name"],
-            'beginOfGame' => time()
+            'beginOfGame' => time(),
+            'controls' => $this -> getControls()
         ]);
     }
 
-    public function selectAction() {
-        unset($_COOKIE['name']);
-        setcookie('name', null, -1, '/');
-    }
-    public function setAction() {
-        if($this -> request -> getArgument("antonia")) {
-            $name = "Antonia";
-        } else {
-            $name = $this -> request -> getArgument("name");
-        }
-        setcookie("name", $name);
 
-        $url = $this
-            ->controllerContext
-            ->getUriBuilder()
-            ->reset()
-            ->setTargetPageUid($this -> settings["gamePage"])
-            ->setCreateAbsoluteUri(true)
-            ->buildFrontendUri();
-        header("Location: ".$url);
-    }
-
-    private function checkUser() {
-        if(!isset($_COOKIE["name"])) {
-            $url = $this
-                ->controllerContext
-                ->getUriBuilder()
-                ->reset()
-                ->setTargetPageUid($this -> settings["loginPage"])
-                ->setCreateAbsoluteUri(true)
-                ->buildFrontendUri();
-            header("Location: ".$url);
+    public function getControls() : \BoergenerWebdesign\BwTetris\Domain\Model\Controlls {
+        /** @var \BoergenerWebdesign\BwTetris\Domain\Model\Controlls $controlls */
+        $controlls = null;
+        if(isset($GLOBALS['TSFE']->fe_user->user) && $GLOBALS['TSFE']->fe_user->user['uid']) {
+            $feUser = $this->feUserRepository->findByUid($GLOBALS['TSFE']->fe_user->user['uid']);
+            $controlls = $this -> controllsRepository -> findOneByFeUser($feUser);
         }
+        if(!$controlls) {
+            $controlls = new \BoergenerWebdesign\BwTetris\Domain\Model\Controlls();
+        }
+        return $controlls;
     }
 }

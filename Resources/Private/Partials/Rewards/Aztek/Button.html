@@ -1,0 +1,12 @@
+<div data-x="{x}" data-y="{y}" class="button">
+    <f:form.hidden name="result[{x}][{y}]" value="{value}" />
+
+    <f:switch expression="{value}">
+        <f:case value="0"><button class="red"></button></f:case>
+        <f:case value="1"><button class="green"></button></f:case>
+        <f:case value="2"><button class="blue"></button></f:case>
+        <f:case value="3"><button class="orange"></button></f:case>
+        <f:case value="4"><button class="yellow"></button></f:case>
+        <f:case value="5"><button class="purple"></button></f:case>
+    </f:switch>
+</div>

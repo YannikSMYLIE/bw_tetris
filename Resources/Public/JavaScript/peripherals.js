@@ -3,13 +3,13 @@ $(document).keydown(function(event) {
     // Tastatureingaben nur verarbeiten während Spiel läuft
     if(mode == "down" && timeout) {
         switch(event.which) {
-            case 37 : // Left
+            case controls.left : // Left
                 left();
                 break;
-            case 39 : // Right
+            case controls.right : // Right
                 right();
                 break;
-            case 40 : // Down
+            case controls.down : // Down
                 if(typeof noDown !== "undefined") {
                     return false;
                 }
@@ -19,15 +19,17 @@ $(document).keydown(function(event) {
                 }
                 loop();
                 break;
-            case 32: // Leertaste
-            case 38: // Up
+            case controls.rotate: // Leertaste
                 rotate();
                 break;
-            case 80: // P
+            case controls.drop: // Up
+                allDown();
+                break;
+            case controls.pause: // P
                 pause();
                 break;
         }
-    } else if(event.which == 80) { // Pausierung aufheben
+    } else if(event.which == controls.pause) { // Pausierung aufheben
         pause();
     }
 });
@@ -61,6 +63,10 @@ $(window).resize(function() {
     resizePlayground();
 });
 function resizePlayground() {
+    if(!$('#playground').lenght) {
+        return false;
+    }
+
     const windowHeight = $(window).height();
     // Header berechnen
     const header = $('#header');
@@ -72,7 +78,6 @@ function resizePlayground() {
 
     // Maximale Höhe des Playgrounds (minus Puffer und Rand)
     const borderSize = Number($('#playground').css("border-left-width").replace("px", ""));
-    console.log(borderSize);
     const maxMainHeight = windowHeight - headerHeight - mainMarginBottom - mainMarginTop - 10 - (borderSize*2);
 
     // Anzahl an Reihen berechnen
