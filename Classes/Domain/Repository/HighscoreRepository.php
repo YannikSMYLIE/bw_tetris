@@ -48,8 +48,14 @@ class HighscoreRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
         if(!$feUser) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('tx_bwtetris_domain_model_highscore')->createQueryBuilder();
             $queryBuilder
-                -> select('fe_user', 'uid')
-                -> from('tx_bwtetris_domain_model_highscore')
+                -> select('highscore.fe_user', 'highscore.uid')
+                -> from('tx_bwtetris_domain_model_highscore', 'highscore')
+                -> join(
+                    'highscore',
+                    'fe_users',
+                    'fe_users',
+                    $queryBuilder->expr()->eq('fe_users.uid', $queryBuilder->quoteIdentifier('highscore.fe_user'))
+                )
                 ->addSelectLiteral(
                     $queryBuilder -> expr() -> max('points', 'maxPoints')
                 )
